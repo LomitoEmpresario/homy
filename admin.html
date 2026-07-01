@@ -384,23 +384,24 @@ function parseHTML(html){
   });
   if(!guideSteps.length) guideSteps=[{icon:'🚿',title:'Limpiá tu piel',text:'Aplicá sobre piel limpia y seca para mayor duración.'},{icon:'✋',title:'Puntos de calor',text:'Muñecas, cuello, detrás de las orejas.'},{icon:'💧',title:'Cantidad justa',text:'2 a 3 pulverizaciones son suficientes.'},{icon:'⏰',title:'Duración garantizada',text:'8 a 15 horas según el punto de aplicación.'}];
   renderGuideSteps();
-  products=[];
-  const scriptMatch=html.match(/const PRODUCTS\s*=\s*(\[[\s\S]*?\]);/);
-  if(scriptMatch){
-    try{products=JSON.parse(scriptMatch[1]);}catch(e){products=[];}
-  }
-  if(!products.length) products=[{id:1,name:'Rosa Noir',cat:'PERFUMES',catKey:'perfume',emoji:'🌹',imgUrl:'',desc:'Fragancia floral con notas de rosa y sándalo.',price:120000,priceOld:150000,badge:'popular'},{id:2,name:'Velvet Musk',cat:'PERFUMES',catKey:'perfume',emoji:'✨',imgUrl:'',desc:'Mezcla de almizcle y vainilla.',price:140000,priceOld:0,badge:'nuevo'}];
-  renderProducts();
   categories=[];
   doc.querySelectorAll('.cat-card').forEach(c=>{
     const icon=t(c,'.cat-icon');
     const name=t(c,'.cat-name');
     const onclick=c.getAttribute('onclick')||'';
     const keyMatch=onclick.match(/filterAndScroll\('([^']+)'\)/);
-    categories.push({icon,name,key:keyMatch?keyMatch[1]:name.toLowerCase().replace(/\s/g,'')});
+    const comingSoon=c.classList.contains('cat-card-soon');
+    categories.push({icon,name,key:keyMatch?keyMatch[1]:name.toLowerCase().replace(/\s/g,''),comingSoon});
   });
-  if(!categories.length) categories=[{icon:'🌸',name:'Perfumes',key:'perfume'},{icon:'🧴',name:'Cremas',key:'crema'},{icon:'🎁',name:'Kits & Sets',key:'kit'},{icon:'💆',name:'Cabello',key:'cabello'},{icon:'🫧',name:'Cuidado Corporal',key:'corporal'},{icon:'✨',name:'Minis',key:'mini'}];
+  if(!categories.length) categories=[{icon:'🌸',name:'Perfumes',key:'perfume'},{icon:'🧴',name:'Cremas',key:'crema'},{icon:'🎁',name:'Kits & Sets',key:'kit'},{icon:'💆',name:'Cabello',key:'cabello'},{icon:'🫧',name:'Cuidado Corporal',key:'corporal'},{icon:'✨',name:'Minis',key:'mini'},{icon:'🏠',name:'Automatización de Hogar',key:'hogar',comingSoon:true}];
   renderCategories();
+  products=[];
+  const scriptMatch=html.match(/const PRODUCTS\s*=\s*(\[[\s\S]*?\]);/);
+  if(scriptMatch){
+    try{products=JSON.parse(scriptMatch[1]);}catch(e){products=[];}
+  }
+  if(!products.length) products=[{id:1,name:'Rosa Noir',cat:'PERFUMES',catKey:'perfume',emoji:'🌹',imgUrl:'',desc:'Fragancia floral con notas de rosa y sándalo.',price:120000,priceOld:150000,badge:'popular'},{id:2,name:'Velvet Musk',cat:'PERFUMES',catKey:'perfume',emoji:'✨',imgUrl:'',desc:'Mezcla de almizcle y vainilla.',price:140000,priceOld:0,badge:'nuevo'},{id:9,name:'Kit Hogar Inteligente',cat:'AUTOMATIZACIÓN DE HOGAR',catKey:'hogar',emoji:'🏠',imgUrl:'',desc:'Kit inicial: enchufe WiFi + foco inteligente + control por app.',price:0,priceOld:0,badge:'proximamente'}];
+  renderProducts();
   s('why-title',t(doc,'.why-section .section-title'));
   whyCards=[];
   doc.querySelectorAll('.why-card').forEach(w=>{
