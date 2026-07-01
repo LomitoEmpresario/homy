@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Admin – Homy</title>
+<style>
+  :root {
+    --rose:#E8A5B0;--rose-dk:#C9808E;--nude:#D4B8A8;
+    --black:#111;--dark:#1a1212;--card:#251515;--border:#3a2020;
+    --white:#fff;--muted:#9a7070;--green:#22c55e;--red:#ef4444;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--dark);color:var(--white);min-height:100vh;font-size:16px}
+  #login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+  .login-logo{width:80px;height:80px;background:var(--rose);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:20px}
+  .login-title{font-size:26px;font-weight:800;margin-bottom:6px;text-align:center}
+  .login-sub{font-size:14px;color:var(--muted);margin-bottom:32px;text-align:center}
+  .login-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 24px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:16px}
+  .login-box label{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px}
+  .login-box input{width:100%;background:#111;border:1.5px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--white);font-size:15px;outline:none;transition:border-color .2s}
+  .login-box input:focus{border-color:var(--rose)}
+  .login-hint{font-size:12px;color:var(--muted);background:#1a1212;border-radius:8px;padding:10px 12px;line-height:1.6}
+  .login-hint a{color:var(--rose)}
+  #app{display:none;flex-direction:column;min-height:100vh}
+  .topbar{background:var(--black);border-bottom:2px solid var(--rose);padding:14px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+  .topbar-logo{width:38px;height:38px;background:var(--rose);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .topbar-title{font-size:16px;font-weight:800;flex:1}
+  .topbar-title span{display:block;font-size:11px;color:var(--muted);font-weight:400}
+  .save-btn{background:var(--rose);color:var(--white);border:none;border-radius:10px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .2s;white-space:nowrap}
+  .save-btn:hover{background:var(--rose-dk)}
+  .save-btn:disabled{background:#555;color:#888;cursor:not-allowed}
+  .tabs{display:flex;overflow-x:auto;background:var(--black);border-bottom:1px solid var(--border);scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:13px 18px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;flex-shrink:0}
+  .tab.active{color:var(--rose);border-color:var(--rose)}
+  .tab:hover:not(.active){color:var(--white)}
+  .section{display:none;padding:18px;max-width:700px;margin:0 auto;width:100%}
+  .section.active{display:block}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+  .card-title{font-size:13px;font-weight:700;color:var(--rose);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:13px;color:var(--muted);font-weight:600;margin-bottom:6px}
+  .field input,.field textarea,.field select{width:100%;background:#111;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-size:15px;outline:none;transition:border-color .2s;font-family:inherit}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--rose)}
+  .field textarea{resize:vertical;min-height:80px}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .color-row{display:flex;align-items:center;gap:10px}
+  .color-row input[type=color]{width:44px;height:44px;border:none;border-radius:8px;cursor:pointer;padding:2px;background:none}
+  .color-row input[type=text]{flex:1}
+  .prod-list{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+  .prod-item{background:#111;border:1.5px solid var(--border);border-radius:12px;padding:16px;position:relative}
+  .prod-item-header{display:flex;align-items:center;gap:10px;margin-bottom:0;cursor:pointer}
+  .prod-item-header .prod-emoji-homy{font-size:26px;flex-shrink:0}
+  .prod-item-header .prod-info{flex:1}
+  .prod-item-header .prod-info strong{display:block;font-size:15px}
+  .prod-item-header .prod-info span{font-size:12px;color:var(--muted)}
+  .prod-toggle{font-size:18px;color:var(--muted);transition:transform .2s}
+  .prod-toggle.open{transform:rotate(180deg)}
+  .prod-body-fields{display:none;margin-top:14px}
+  .prod-body-fields.open{display:block}
+  .del-btn{background:none;border:none;color:var(--red);font-size:20px;cursor:pointer;padding:4px;border-radius:6px;flex-shrink:0}
+  .del-btn:hover{background:rgba(239,68,68,.1)}
+  .add-btn{background:transparent;border:2px dashed var(--border);border-radius:12px;padding:14px;width:100%;color:var(--muted);font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .add-btn:hover{border-color:var(--rose);color:var(--rose)}
+  .why-item{background:#111;border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+  .why-item-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .why-item-header .emoji-input{width:50px;font-size:24px;text-align:center;background:none;border:1.5px solid var(--border);border-radius:8px;padding:4px;color:var(--white)}
+  .why-item-header .title-input{flex:1;background:#1a1212;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--white);font-size:15px;font-weight:600;outline:none}
+  .why-item-header .title-input:focus{border-color:var(--rose)}
+  .why-item textarea{width:100%;background:#1a1212;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--muted);font-size:14px;resize:vertical;min-height:60px;outline:none;font-family:inherit}
+  .why-item textarea:focus{border-color:var(--rose)}
+  .guide-item{background:#111;border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+  .guide-item-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .guide-item-row .num{width:28px;height:28px;background:var(--rose);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+  .guide-item-row .emoji-input{width:50px;font-size:22px;text-align:center;background:none;border:1.5px solid var(--border);border-radius:8px;padding:4px;color:var(--white)}
+  .guide-item-row .title-input{flex:1;background:#1a1212;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--white);font-size:14px;font-weight:600;outline:none}
+  .guide-item-row .title-input:focus{border-color:var(--rose)}
+  .guide-item textarea{width:100%;background:#1a1212;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--muted);font-size:14px;resize:vertical;min-height:56px;outline:none;font-family:inherit}
+  .preview-link{display:flex;align-items:center;gap:10px;background:rgba(232,165,176,.1);border:1px solid rgba(232,165,176,.3);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:var(--rose);text-decoration:none;font-weight:600}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 20px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;z-index:999;transition:transform .3s;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast.success{border-color:var(--green);color:var(--green)}
+  .toast.error{border-color:var(--red);color:var(--red)}
+  .toast.loading{border-color:var(--rose);color:var(--rose)}
+  .ig-item-row{display:flex;align-items:center;gap:10px;background:#111;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+  .ig-item-row input{flex:1;background:none;border:none;color:var(--white);font-size:14px;outline:none}
+  .ig-item-row input::placeholder{color:var(--muted)}
+  @media(max-width:480px){.field-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-logo">🌸</div>
+  <div class="login-title">Panel Admin – Homy</div>
+  <div class="login-sub">Perfumes & Cuidado Personal</div>
+  <div class="login-box">
+    <div>
+      <label>Tu usuario de GitHub</label>
+      <input id="gh-user" type="text" placeholder="tu-usuario"/>
+    </div>
+    <div>
+      <label>Token de GitHub</label>
+      <input id="gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx"/>
+    </div>
+    <div>
+      <label>Nombre del repositorio</label>
+      <input id="gh-repo" type="text" placeholder="homy-store" value="homy-store"/>
+    </div>
+    <div class="login-hint">
+      ℹ️ Creá tu token en <a href="https://github.com/settings/tokens/new?description=HomyAdmin&scopes=repo" target="_blank">👉 GitHub → Settings → Tokens</a>, marcá el permiso <strong>repo</strong> y pegalo acá. Se guarda solo en tu celular.
+    </div>
+    <button class="save-btn" onclick="doLogin()" style="width:100%;justify-content:center;padding:15px">🔓 Entrar al Panel</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-logo">🌸</div>
+    <div class="topbar-title">Homy Admin <span id="site-url">homy-store.vercel.app</span></div>
+    <button class="save-btn" id="main-save-btn" onclick="publishAll()" disabled>📤 Publicar</button>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('general')">🏠 General</div>
+    <div class="tab" onclick="switchTab('hero')">⭐ Hero</div>
+    <div class="tab" onclick="switchTab('guia')">📖 Guía uso</div>
+    <div class="tab" onclick="switchTab('productos')">🛍️ Productos</div>
+    <div class="tab" onclick="switchTab('categorias')">🏷️ Categorías</div>
+    <div class="tab" onclick="switchTab('porque')">✅ Por qué</div>
+    <div class="tab" onclick="switchTab('redes')">📱 Redes</div>
+    <div class="tab" onclick="switchTab('contacto')">📞 Contacto</div>
+    <div class="tab" onclick="switchTab('colores')">🎨 Colores</div>
+  </div>
+
+  <!-- GENERAL -->
+  <div class="section active" id="tab-general">
+    <a class="preview-link" id="preview-link" href="#" target="_blank">🌸 Ver tu tienda en vivo →</a>
+    <div class="card">
+      <div class="card-title">📢 Barra de anuncio</div>
+      <div class="field"><label>Texto del anuncio (arriba de todo)</label><input type="text" id="topbar-text" placeholder="✨ Envíos a todo Paraguay..."/></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🏷️ Nombre del negocio</div>
+      <div class="field-row">
+        <div class="field"><label>Nombre</label><input type="text" id="biz-name" placeholder="HOMY"/></div>
+        <div class="field"><label>Subtítulo del logo</label><input type="text" id="biz-sub" placeholder="Perfumes & Cuidado"/></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Emoji/logo del encabezado</label><input type="text" id="biz-emoji" placeholder="🌸" style="font-size:24px;text-align:center"/></div>
+        <div class="field"><label>Título pestaña del navegador</label><input type="text" id="page-title" placeholder="Homy – Perfumes & Cuidado Personal"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🛒 Configuración de la tienda</div>
+      <div class="field"><label>Pedido mínimo (en guaraníes, sin puntos)</label><input type="number" id="min-order" placeholder="10000"/></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔻 Footer</div>
+      <div class="field"><label>Texto del footer</label><input type="text" id="footer-text" placeholder="Tu esencia, tu identidad."/></div>
+      <div class="field"><label>Copyright</label><input type="text" id="copyright-text" placeholder="© 2025 Homy – Todos los derechos reservados"/></div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="section" id="tab-hero">
+    <div class="card">
+      <div class="card-title">⭐ Sección principal</div>
+      <div class="field"><label>Etiqueta pequeña (eyebrow)</label><input type="text" id="hero-eyebrow" placeholder="🌸 Envíos a todo Paraguay"/></div>
+      <div class="field-row">
+        <div class="field"><label>Línea 1 del título</label><input type="text" id="hero-t1" placeholder="Tu esencia,"/></div>
+        <div class="field"><label>Línea 2 (en rosa)</label><input type="text" id="hero-t2" placeholder="tu identidad"/></div>
+      </div>
+      <div class="field"><label>Descripción</label><textarea id="hero-sub" placeholder="Perfumes de larga duración..."></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Botón principal</label><input type="text" id="hero-btn1" placeholder="🛍️ Ver Catálogo"/></div>
+        <div class="field"><label>Botón secundario</label><input type="text" id="hero-btn2" placeholder="📖 Cómo usar"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 Estadísticas (tarjeta derecha)</div>
+      <div id="stats-list"></div>
+      <button class="add-btn" onclick="addStat()">+ Agregar estadística</button>
+    </div>
+    <div class="card">
+      <div class="card-title">✔️ Puntos de confianza</div>
+      <div id="promises-list"></div>
+      <button class="add-btn" onclick="addPromise()">+ Agregar punto</button>
+    </div>
+  </div>
+
+  <!-- GUIA -->
+  <div class="section" id="tab-guia">
+    <div class="card">
+      <div class="card-title">📖 Guía de uso</div>
+      <div class="field"><label>Título de la sección</label><input type="text" id="guide-title" placeholder="¿Cómo usar nuestros productos?"/></div>
+      <div class="field"><label>Subtítulo</label><input type="text" id="guide-sub" placeholder="Seguí estos simples pasos..."/></div>
+      <div id="guide-list" style="margin-top:16px"></div>
+      <button class="add-btn" onclick="addGuideStep()">+ Agregar paso</button>
+    </div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <div class="section" id="tab-productos">
+    <div class="card">
+      <div class="card-title">🛍️ Productos</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Tocá un producto para editarlo. Podés agregar foto, precio, descripción y badge.</p>
+      <div id="prod-list" class="prod-list"></div>
+      <button class="add-btn" onclick="addProduct()">+ Agregar producto</button>
+    </div>
+  </div>
+
+  <!-- CATEGORIAS -->
+  <div class="section" id="tab-categorias">
+    <div class="card">
+      <div class="card-title">🏷️ Categorías</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Las categorías aparecen en el menú de navegación y en la cuadrícula de categorías.</p>
+      <div id="cats-list"></div>
+      <button class="add-btn" onclick="addCategory()">+ Agregar categoría</button>
+    </div>
+  </div>
+
+  <!-- POR QUÉ -->
+  <div class="section" id="tab-porque">
+    <div class="card">
+      <div class="card-title">✅ Sección "Por qué Homy"</div>
+      <div class="field"><label>Título</label><input type="text" id="why-title" placeholder="Calidad que se siente"/></div>
+      <div id="why-list" style="margin:16px 0"></div>
+      <button class="add-btn" onclick="addWhyCard()">+ Agregar tarjeta</button>
+    </div>
+  </div>
+
+  <!-- REDES -->
+  <div class="section" id="tab-redes">
+    <div class="card">
+      <div class="card-title">📷 Instagram & TikTok</div>
+      <div class="field"><label>Usuario de Instagram (sin @)</label><input type="text" id="ig-user" placeholder="homypy"/></div>
+      <div class="field"><label>URL completa Instagram</label><input type="text" id="ig-url" placeholder="https://www.instagram.com/homypy"/></div>
+      <div class="field"><label>Usuario de TikTok (sin @)</label><input type="text" id="tt-user" placeholder="homypy"/></div>
+      <div class="field"><label>URL completa TikTok</label><input type="text" id="tt-url" placeholder="https://www.tiktok.com/@homypy"/></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🖼️ Fotos de la galería Instagram</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Pegá las URLs de las fotos que querés mostrar. Podés subir las fotos a GitHub y pegar la URL, o usar cualquier enlace de imagen.</p>
+      <div id="ig-photos-list"></div>
+      <button class="add-btn" onclick="addIgPhoto()">+ Agregar foto</button>
+    </div>
+  </div>
+
+  <!-- CONTACTO -->
+  <div class="section" id="tab-contacto">
+    <div class="card">
+      <div class="card-title">📞 Contacto</div>
+      <div class="field"><label>Teléfono</label><input type="tel" id="phone-num" placeholder="+595 XXX XXX XXX"/></div>
+      <div class="field"><label>WhatsApp (solo números, ej: 595992787794)</label><input type="text" id="wpp-num" placeholder="595992787794"/></div>
+      <div class="field"><label>Mensaje por defecto de WhatsApp</label><input type="text" id="wpp-msg" placeholder="Hola! Quiero consultar sobre los productos Homy"/></div>
+      <div class="field"><label>Email</label><input type="email" id="contact-email" placeholder="homy@gmail.com"/></div>
+      <div class="field"><label>Dirección / Ciudad</label><input type="text" id="contact-address" placeholder="Asunción, Paraguay"/></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🟡 Sección de llamado a la acción (CTA)</div>
+      <div class="field"><label>Título</label><input type="text" id="cta-title" placeholder="¿Lista para tu rutina ideal?"/></div>
+      <div class="field"><label>Descripción</label><textarea id="cta-text" placeholder="Contactanos y te ayudamos..."></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Botón llamada</label><input type="text" id="cta-btn1" placeholder="📞 Llamar"/></div>
+        <div class="field"><label>Botón WhatsApp</label><input type="text" id="cta-btn2" placeholder="💬 WhatsApp"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🚚 Opciones de entrega (checkout)</div>
+      <div id="delivery-list"></div>
+      <button class="add-btn" onclick="addDelivery()">+ Agregar opción de entrega</button>
+    </div>
+  </div>
+
+  <!-- COLORES -->
+  <div class="section" id="tab-colores">
+    <div class="card">
+      <div class="card-title">🎨 Colores del sitio</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Cambiá los colores y toda la página se actualiza automáticamente.</p>
+      <div class="field">
+        <label>Color rosa (principal)</label>
+        <div class="color-row"><input type="color" id="color-rose" value="#E8A5B0" oninput="syncColor('color-rose','color-rose-t')"/><input type="text" id="color-rose-t" value="#E8A5B0" oninput="syncColorTxt('color-rose-t','color-rose')"/></div>
+      </div>
+      <div class="field">
+        <label>Color rosa oscuro (hover)</label>
+        <div class="color-row"><input type="color" id="color-rose-dk" value="#C9808E" oninput="syncColor('color-rose-dk','color-rose-dk-t')"/><input type="text" id="color-rose-dk-t" value="#C9808E" oninput="syncColorTxt('color-rose-dk-t','color-rose-dk')"/></div>
+      </div>
+      <div class="field">
+        <label>Color crema (fondo principal)</label>
+        <div class="color-row"><input type="color" id="color-cream" value="#FAF6F2" oninput="syncColor('color-cream','color-cream-t')"/><input type="text" id="color-cream-t" value="#FAF6F2" oninput="syncColorTxt('color-cream-t','color-cream')"/></div>
+      </div>
+      <div class="field">
+        <label>Color negro (fondo hero/footer)</label>
+        <div class="color-row"><input type="color" id="color-black" value="#1C1210" oninput="syncColor('color-black','color-black-t')"/><input type="text" id="color-black-t" value="#1C1210" oninput="syncColorTxt('color-black-t','color-black')"/></div>
+      </div>
+      <div class="field">
+        <label>Color rojo (badge oferta)</label>
+        <div class="color-row"><input type="color" id="color-red" value="#C0392B" oninput="syncColor('color-red','color-red-t')"/><input type="text" id="color-red-t" value="#C0392B" oninput="syncColorTxt('color-red-t','color-red')"/></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let GH_USER='',GH_TOKEN='',GH_REPO='',SHA='';
+let stats=[],promises=[],guideSteps=[],products=[],categories=[],whyCards=[],igPhotos=[],deliveryOpts=[];
+
+function doLogin(){
+  GH_USER=document.getElementById('gh-user').value.trim();
+  GH_TOKEN=document.getElementById('gh-token').value.trim();
+  GH_REPO=document.getElementById('gh-repo').value.trim();
+  if(!GH_USER||!GH_TOKEN||!GH_REPO){showToast('error','⚠️ Completá todos los campos');return;}
+  localStorage.setItem('homy_gh_user',GH_USER);
+  localStorage.setItem('homy_gh_token',GH_TOKEN);
+  localStorage.setItem('homy_gh_repo',GH_REPO);
+  loadSite();
+}
+
+async function loadSite(){
+  showToast('loading','⏳ Cargando tu tienda...');
+  try{
+    const res=await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/index.html`,{
+      headers:{'Authorization':'Bearer '+GH_TOKEN,'Accept':'application/vnd.github.v3+json'}
+    });
+    if(!res.ok){const e=await res.json();throw new Error(e.message);}
+    const data=await res.json();
+    SHA=data.sha;
+    const html=atob(data.content.replace(/\n/g,''));
+    parseHTML(html);
+    document.getElementById('login-screen').style.display='none';
+    const app=document.getElementById('app');
+    app.style.display='flex';
+    document.getElementById('main-save-btn').disabled=false;
+    const url=`https://${GH_REPO}.vercel.app`;
+    document.getElementById('preview-link').href=url;
+    document.getElementById('site-url').textContent=url;
+    showToast('success','✅ Tienda cargada correctamente');
+  }catch(e){showToast('error','❌ '+e.message);}
+}
+
+function parseHTML(html){
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  s('page-title',doc.title);
+  s('topbar-text',t(doc,'.topbar'));
+  s('biz-name',t(doc,'.logo-name'));
+  s('biz-sub',t(doc,'.logo-sub'));
+  s('biz-emoji',doc.querySelector('.logo-mark')?.textContent?.trim()||'🌸');
+  s('footer-text',doc.querySelector('.footer-brand p')?.textContent?.trim()||'');
+  s('copyright-text',t(doc,'.footer-bottom'));
+  s('hero-eyebrow',t(doc,'.hero-eyebrow'));
+  s('hero-sub',t(doc,'.hero-sub'));
+  const btns=doc.querySelectorAll('.hero-actions .btn');
+  if(btns[0])s('hero-btn1',btns[0].textContent.trim());
+  if(btns[1])s('hero-btn2',btns[1].textContent.trim());
+  const heroTitle=doc.querySelector('.hero-title');
+  if(heroTitle){
+    const em=heroTitle.querySelector('em');
+    s('hero-t1',heroTitle.childNodes[0]?.textContent?.trim()||'');
+    s('hero-t2',em?.textContent?.trim()||'');
+  }
+  stats=[];
+  doc.querySelectorAll('.stat-item').forEach(si=>{
+    stats.push({num:t(si,'.stat-num'),label:t(si,'.stat-label')});
+  });
+  if(!stats.length) stats=[{num:'500+',label:'Clientes felices'},{num:'15',label:'Días duración'},{num:'100%',label:'Amigable piel'},{num:'48h',label:'Envío express'}];
+  renderStats();
+  promises=[];
+  doc.querySelectorAll('.promise-item').forEach(pi=>{
+    const txt=pi.textContent.replace(/\s+/g,' ').trim();
+    promises.push(txt);
+  });
+  if(!promises.length) promises=['Productos de calidad premium','Entrega a domicilio en todo el país','Atención personalizada por WhatsApp'];
+  renderPromises();
+  s('guide-title',t(doc,'.guide-section .section-title'));
+  s('guide-sub',t(doc,'.guide-section .section-sub'));
+  guideSteps=[];
+  doc.querySelectorAll('.guide-step').forEach(g=>{
+    guideSteps.push({icon:t(g,'.guide-step-icon'),title:g.querySelector('h3')?.textContent?.trim()||'',text:g.querySelector('p')?.textContent?.trim()||''});
+  });
+  if(!guideSteps.length) guideSteps=[{icon:'🚿',title:'Limpiá tu piel',text:'Aplicá sobre piel limpia y seca para mayor duración.'},{icon:'✋',title:'Puntos de calor',text:'Muñecas, cuello, detrás de las orejas.'},{icon:'💧',title:'Cantidad justa',text:'2 a 3 pulverizaciones son suficientes.'},{icon:'⏰',title:'Duración garantizada',text:'8 a 15 horas según el punto de aplicación.'}];
+  renderGuideSteps();
+  products=[];
+  const scriptMatch=html.match(/const PRODUCTS\s*=\s*(\[[\s\S]*?\]);/);
+  if(scriptMatch){
+    try{products=JSON.parse(scriptMatch[1]);}catch(e){products=[];}
+  }
+  if(!products.length) products=[{id:1,name:'Rosa Noir',cat:'PERFUMES',catKey:'perfume',emoji:'🌹',imgUrl:'',desc:'Fragancia floral con notas de rosa y sándalo.',price:120000,priceOld:150000,badge:'popular'},{id:2,name:'Velvet Musk',cat:'PERFUMES',catKey:'perfume',emoji:'✨',imgUrl:'',desc:'Mezcla de almizcle y vainilla.',price:140000,priceOld:0,badge:'nuevo'}];
+  renderProducts();
+  categories=[];
+  doc.querySelectorAll('.cat-card').forEach(c=>{
+    const icon=t(c,'.cat-icon');
+    const name=t(c,'.cat-name');
+    const onclick=c.getAttribute('onclick')||'';
+    const keyMatch=onclick.match(/filterAndScroll\('([^']+)'\)/);
+    categories.push({icon,name,key:keyMatch?keyMatch[1]:name.toLowerCase().replace(/\s/g,'')});
+  });
+  if(!categories.length) categories=[{icon:'🌸',name:'Perfumes',key:'perfume'},{icon:'🧴',name:'Cremas',key:'crema'},{icon:'🎁',name:'Kits & Sets',key:'kit'},{icon:'💆',name:'Cabello',key:'cabello'},{icon:'🫧',name:'Cuidado Corporal',key:'corporal'},{icon:'✨',name:'Minis',key:'mini'}];
+  renderCategories();
+  s('why-title',t(doc,'.why-section .section-title'));
+  whyCards=[];
+  doc.querySelectorAll('.why-card').forEach(w=>{
+    whyCards.push({icon:t(w,'.why-icon'),title:t(w,'.why-title'),text:t(w,'.why-text')});
+  });
+  if(!whyCards.length) whyCards=[{icon:'🌿',title:'Ingredientes naturales',text:'Fórmulas con ingredientes seleccionados.'},{icon:'💜',title:'Larga duración',text:'8 a 15 horas garantizadas.'},{icon:'🚀',title:'Envíos rápidos',text:'24/48 horas a todo Paraguay.'},{icon:'💬',title:'Atención personalizada',text:'Te acompañamos por WhatsApp.'}];
+  renderWhyCards();
+  const igLink=doc.querySelector('.social-link[href*="instagram"]');
+  const ttLink=doc.querySelector('.social-link[href*="tiktok"]');
+  if(igLink){s('ig-url',igLink.href);s('ig-user',igLink.href.split('instagram.com/')[1]?.replace('/',''));}
+  if(ttLink){s('tt-url',ttLink.href);s('tt-user',ttLink.href.split('@')[1]?.replace('/',''));}
+  igPhotos=[];
+  doc.querySelectorAll('.ig-item img').forEach(img=>{igPhotos.push({url:img.src,emoji:''});});
+  doc.querySelectorAll('.ig-item .ig-item-emoji').forEach(e=>{igPhotos.push({url:'',emoji:e.textContent.trim()});});
+  if(!igPhotos.length) igPhotos=[{url:'',emoji:'🌸'},{url:'',emoji:'💐'},{url:'',emoji:'✨'},{url:'',emoji:'🧴'}];
+  renderIgPhotos();
+  const phone=doc.querySelector('.footer-col a[href^="tel:"]');
+  if(phone)s('phone-num',phone.textContent.replace('📞','').trim());
+  const wppFloat=doc.querySelector('.wpp-float');
+  if(wppFloat){const m=wppFloat.href.match(/wa\.me\/(\d+)\?text=(.*)/);if(m){s('wpp-num',m[1]);s('wpp-msg',decodeURIComponent(m[2]));}}
+  const emailEl=doc.querySelector('.footer-col a[href^="mailto:"]');
+  if(emailEl)s('contact-email',emailEl.href.replace('mailto:',''));
+  const addrEl=doc.querySelector('.footer-col a[href="#"]');
+  if(addrEl)s('contact-address',addrEl.textContent.replace('📍','').trim());
+  s('cta-title',t(doc,'.cta-inner .display'));
+  s('cta-text',t(doc,'.cta-inner p'));
+  const ctaBtns=doc.querySelectorAll('.cta-actions .btn');
+  if(ctaBtns[0])s('cta-btn1',ctaBtns[0].textContent.trim());
+  if(ctaBtns[1])s('cta-btn2',ctaBtns[1].textContent.trim());
+  deliveryOpts=[];
+  doc.querySelectorAll('.delivery-opt').forEach(o=>{
+    deliveryOpts.push({name:t(o,'.delivery-opt-name').replace(/^[^\w]*/,''),desc:t(o,'.delivery-opt-desc'),price:t(o,'.delivery-opt-price')});
+  });
+  if(!deliveryOpts.length) deliveryOpts=[{name:'📦 Encomienda',desc:'Envío a todo Paraguay · Desde ₲ 30.000',price:'Gratis desde ₲ 130.000'},{name:'🏍️ Delivery – Asunción/Central',desc:'Entrega a domicilio · 24–48 hs',price:'Gratis desde ₲ 125.000'}];
+  renderDelivery();
+  const minOrderMatch=html.match(/const MIN_ORDER\s*=\s*(\d+)/);
+  if(minOrderMatch)s('min-order',minOrderMatch[1]);
+  const css=doc.querySelector('style')?.textContent||'';
+  const colorMap=[['--rose','color-rose'],['--rose-dk','color-rose-dk'],['--cream:','color-cream'],['--black:','color-black'],['--red:','color-red']];
+  colorMap.forEach(([varName,id])=>{
+    const m=css.match(new RegExp(varName.replace('.','\\.')+'\\s*:\\s*(#[0-9a-fA-F]+)'));
+    if(m){document.getElementById(id).value=m[1];document.getElementById(id+'-t').value=m[1];}
+  });
+}
+
+function t(root,sel){return root.querySelector(sel)?.textContent?.trim()||'';}
+function s(id,val){const el=document.getElementById(id);if(el&&val!==undefined&&val!=='')el.value=val;}
+function v(id){return document.getElementById(id)?.value?.trim()||'';}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function renderStats(){
+  const el=document.getElementById('stats-list');
+  el.innerHTML=stats.map((s,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;background:#111;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px">
+      <input style="flex:1;background:none;border:none;color:var(--rose);font-size:18px;font-weight:700;outline:none;width:80px" value="${esc(s.num)}" onchange="stats[${i}].num=this.value" placeholder="500+"/>
+      <input style="flex:2;background:none;border:none;color:var(--muted);font-size:14px;outline:none" value="${esc(s.label)}" onchange="stats[${i}].label=this.value" placeholder="Clientes felices"/>
+      <button class="del-btn" onclick="stats.splice(${i},1);renderStats()">✕</button>
+    </div>`).join('');
+}
+function addStat(){stats.push({num:'0',label:'Nuevo stat'});renderStats();}
+
+function renderPromises(){
+  const el=document.getElementById('promises-list');
+  el.innerHTML=promises.map((p,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;background:#111;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px">
+      <input style="flex:1;background:none;border:none;color:var(--white);font-size:14px;outline:none" value="${esc(p)}" onchange="promises[${i}]=this.value" placeholder="Punto de confianza"/>
+      <button class="del-btn" onclick="promises.splice(${i},1);renderPromises()">✕</button>
+    </div>`).join('');
+}
+function addPromise(){promises.push('Nuevo punto');renderPromises();}
+
+function renderGuideSteps(){
+  const el=document.getElementById('guide-list');
+  el.innerHTML=guideSteps.map((g,i)=>`
+    <div class="guide-item">
+      <div class="guide-item-row">
+        <div class="num">${i+1}</div>
+        <input class="emoji-input" type="text" value="${esc(g.icon)}" onchange="guideSteps[${i}].icon=this.value"/>
+        <input class="title-input" type="text" value="${esc(g.title)}" onchange="guideSteps[${i}].title=this.value" placeholder="Título del paso"/>
+        <button class="del-btn" onclick="guideSteps.splice(${i},1);renderGuideSteps()">✕</button>
+      </div>
+      <textarea onchange="guideSteps[${i}].text=this.value" placeholder="Descripción del paso...">${esc(g.text)}</textarea>
+    </div>`).join('');
+}
+function addGuideStep(){guideSteps.push({icon:'💡',title:'Nuevo paso',text:'Descripción aquí...'});renderGuideSteps();}
+
+function renderProducts(){
+  const el=document.getElementById('prod-list');
+  el.innerHTML=products.map((p,i)=>`
+    <div class="prod-item">
+      <div class="prod-item-header" onclick="toggleProd(${i})">
+        <div class="prod-emoji-homy">${p.emoji||'🌸'}</div>
+        <div class="prod-info">
+          <strong>${esc(p.name)||'Sin nombre'}</strong>
+          <span>${esc(p.cat)||''} · ${p.price?'₲ '+Number(p.price).toLocaleString('es-PY'):'Sin precio'} ${p.badge?'· '+p.badge:''}</span>
+        </div>
+        <div class="prod-toggle" id="ptoggle-${i}">▼</div>
+        <button class="del-btn" onclick="event.stopPropagation();products.splice(${i},1);renderProducts()">✕</button>
+      </div>
+      <div class="prod-body-fields" id="pfields-${i}">
+        <div class="field-row" style="margin-top:4px">
+          <div class="field"><label>Emoji</label><input type="text" value="${esc(p.emoji)}" onchange="products[${i}].emoji=this.value" style="font-size:22px;text-align:center"/></div>
+          <div class="field"><label>Badge</label>
+            <select onchange="products[${i}].badge=this.value">
+              <option value="" ${!p.badge?'selected':''}>Sin badge</option>
+              <option value="nuevo" ${p.badge==='nuevo'?'selected':''}>🆕 NUEVO</option>
+              <option value="popular" ${p.badge==='popular'?'selected':''}>⭐ POPULAR</option>
+              <option value="oferta" ${p.badge==='oferta'?'selected':''}>🔥 OFERTA</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Nombre del producto</label><input type="text" value="${esc(p.name)}" onchange="products[${i}].name=this.value"/></div>
+        <div class="field-row">
+          <div class="field"><label>Categoría (texto, ej: PERFUMES)</label><input type="text" value="${esc(p.cat)}" onchange="products[${i}].cat=this.value"/></div>
+          <div class="field"><label>Clave de categoría (filtro)</label>
+            <select onchange="products[${i}].catKey=this.value">
+              ${['perfume','crema','kit','cabello','corporal','mini'].map(k=>`<option value="${k}" ${p.catKey===k?'selected':''}>${k}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Descripción</label><textarea onchange="products[${i}].desc=this.value">${esc(p.desc)}</textarea></div>
+        <div class="field-row">
+          <div class="field"><label>Precio (₲, sin puntos)</label><input type="number" value="${p.price||''}" onchange="products[${i}].price=Number(this.value)"/></div>
+          <div class="field"><label>Precio anterior (₲, sin puntos, 0=ninguno)</label><input type="number" value="${p.priceOld||0}" onchange="products[${i}].priceOld=Number(this.value)"/></div>
+        </div>
+        <div class="field"><label>URL de imagen (opcional — dejá vacío para usar el emoji)</label><input type="text" value="${esc(p.imgUrl||'')}" onchange="products[${i}].imgUrl=this.value" placeholder="https://... enlace directo a la imagen"/></div>
+      </div>
+    </div>`).join('');
+}
+function toggleProd(i){
+  document.getElementById('pfields-'+i).classList.toggle('open');
+  document.getElementById('ptoggle-'+i).classList.toggle('open');
+}
+function addProduct(){
+  const id=Date.now();
+  products.push({id,name:'Nuevo Producto',cat:'PERFUMES',catKey:'perfume',emoji:'🌸',imgUrl:'',desc:'Descripción del producto',price:50000,priceOld:0,badge:'nuevo'});
+  renderProducts();
+  setTimeout(()=>toggleProd(products.length-1),50);
+}
+
+function renderCategories(){
+  const el=document.getElementById('cats-list');
+  el.innerHTML=categories.map((c,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;background:#111;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px">
+      <input style="width:50px;font-size:20px;text-align:center;background:none;border:1.5px solid var(--border);border-radius:8px;padding:4px;color:var(--white)" type="text" value="${esc(c.icon)}" onchange="categories[${i}].icon=this.value"/>
+      <input style="flex:1;background:none;border:none;color:var(--white);font-size:15px;outline:none" type="text" value="${esc(c.name)}" onchange="categories[${i}].name=this.value" placeholder="Nombre"/>
+      <input style="width:100px;background:none;border:1.5px solid var(--border);border-radius:8px;padding:6px 8px;color:var(--muted);font-size:13px;outline:none" type="text" value="${esc(c.key)}" onchange="categories[${i}].key=this.value" placeholder="clave"/>
+      <button class="del-btn" onclick="categories.splice(${i},1);renderCategories()">✕</button>
+    </div>`).join('');
+}
+function addCategory(){categories.push({icon:'✨',name:'Nueva Categoría',key:'nueva'});renderCategories();}
+
+function renderWhyCards(){
+  const el=document.getElementById('why-list');
+  el.innerHTML=whyCards.map((w,i)=>`
+    <div class="why-item">
+      <div class="why-item-header">
+        <input class="emoji-input" type="text" value="${esc(w.icon)}" onchange="whyCards[${i}].icon=this.value"/>
+        <input class="title-input" type="text" value="${esc(w.title)}" onchange="whyCards[${i}].title=this.value" placeholder="Título"/>
+        <button class="del-btn" onclick="whyCards.splice(${i},1);renderWhyCards()">✕</button>
+      </div>
+      <textarea onchange="whyCards[${i}].text=this.value" placeholder="Descripción...">${esc(w.text)}</textarea>
+    </div>`).join('');
+}
+function addWhyCard(){whyCards.push({icon:'💖',title:'Nuevo punto',text:'Descripción aquí...'});renderWhyCards();}
+
+function renderIgPhotos(){
+  const el=document.getElementById('ig-photos-list');
+  el.innerHTML=igPhotos.map((p,i)=>`
+    <div class="ig-item-row">
+      <input type="text" value="${esc(p.url)}" onchange="igPhotos[${i}].url=this.value" placeholder="URL de la foto (https://...) — o dejá vacío y ponés un emoji"/>
+      <input type="text" value="${esc(p.emoji)}" onchange="igPhotos[${i}].emoji=this.value" placeholder="🌸" style="width:60px;text-align:center;font-size:20px"/>
+      <button class="del-btn" onclick="igPhotos.splice(${i},1);renderIgPhotos()">✕</button>
+    </div>`).join('');
+}
+function addIgPhoto(){igPhotos.push({url:'',emoji:'🌸'});renderIgPhotos();}
+
+function renderDelivery(){
+  const el=document.getElementById('delivery-list');
+  el.innerHTML=deliveryOpts.map((d,i)=>`
+    <div style="background:#111;border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <input style="flex:1;background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--white);font-size:15px;font-weight:600;outline:none" type="text" value="${esc(d.name)}" onchange="deliveryOpts[${i}].name=this.value" placeholder="Nombre de la opción"/>
+        <button class="del-btn" onclick="deliveryOpts.splice(${i},1);renderDelivery()">✕</button>
+      </div>
+      <input style="width:100%;background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--muted);font-size:13px;outline:none;margin-bottom:6px" type="text" value="${esc(d.desc)}" onchange="deliveryOpts[${i}].desc=this.value" placeholder="Descripción"/>
+      <input style="width:100%;background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--rose);font-size:13px;outline:none" type="text" value="${esc(d.price)}" onchange="deliveryOpts[${i}].price=this.value" placeholder="Info de precio / envío gratis"/>
+    </div>`).join('');
+}
+function addDelivery(){deliveryOpts.push({name:'Nueva opción',desc:'Descripción',price:'A consultar'});renderDelivery();}
+
+// ── GENERATE & PUBLISH ──
+function generateHTML(){
+  const wpp=v('wpp-num');
+  const wppMsg=encodeURIComponent(v('wpp-msg')||'Hola! Quiero consultar sobre los productos Homy');
+  const phone=v('phone-num');
+  const rose=v('color-rose')||'#E8A5B0';
+  const roseDk=v('color-rose-dk')||'#C9808E';
+  const cream=v('color-cream')||'#FAF6F2';
+  const black=v('color-black')||'#1C1210';
+  const red=v('color-red')||'#C0392B';
+  const igUrl=v('ig-url')||'https://www.instagram.com/homypy';
+  const igUser=v('ig-user')||'homypy';
+  const ttUrl=v('tt-url')||'https://www.tiktok.com/@homypy';
+  const ttUser=v('tt-user')||'homypy';
+  const minOrder=v('min-order')||'10000';
+  const cream2=lighten(cream,-5);
+  const charcoal=darken(black,+20);
+
+  const statsHTML=stats.map(s=>`<div class="stat-item"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('');
+  const promisesHTML=promises.map(p=>`<div class="promise-item"><span class="promise-dot"></span>${p}</div>`).join('');
+  const guideHTML=guideSteps.map((g,i)=>`
+        <div class="guide-step">
+          <div class="guide-step-num">${i+1}</div>
+          <div class="guide-step-icon">${g.icon}</div>
+          <h3>${g.title}</h3>
+          <p>${g.text}</p>
+        </div>`).join('');
+  const catsNavHTML=categories.map(c=>`<a href="#categorias">${c.icon} ${c.name}</a>`).join('');
+  const catsGridHTML=categories.map(c=>`
+        <div class="cat-card" onclick="filterAndScroll('${c.key}')">
+          <div class="cat-icon">${c.icon}</div>
+          <div class="cat-name">${c.name}</div>
+        </div>`).join('');
+  const filterBtnsHTML=`<button class="filter-btn active" onclick="filterProds(this,'todos')">Todos</button>`
+    +categories.map(c=>`<button class="filter-btn" onclick="filterProds(this,'${c.key}')">${c.icon} ${c.name}</button>`).join('');
+  const whyHTML=whyCards.map(w=>`
+        <div class="why-card">
+          <div class="why-icon">${w.icon}</div>
+          <div class="why-title">${w.title}</div>
+          <div class="why-text">${w.text}</div>
+        </div>`).join('');
+  const igPhotosHTML=igPhotos.map(p=>p.url
+    ?`<div class="ig-item"><img src="${p.url}" alt="Homy" loading="lazy"/></div>`
+    :`<div class="ig-item"><div class="ig-item-emoji">${p.emoji||'🌸'}</div></div>`).join('');
+  const deliveryOptsHTML=deliveryOpts.map((d,i)=>`
+              <div class="delivery-opt ${i===0?'selected':''}" onclick="selectDelivery(this,'${d.name.replace(/'/g,"\\'")}')">
+                <div class="delivery-opt-name">${d.name}</div>
+                <div class="delivery-opt-desc">${d.desc}</div>
+                <div class="delivery-opt-price">${d.price}</div>
+              </div>`).join('');
+  const productsJS=JSON.stringify(products,null,2);
+  const footerCats=categories.slice(0,4).map(c=>`<li><a href="#productos">${c.name}</a></li>`).join('');
+  const footerInfo=categories.slice(4).map(c=>`<li><a href="#productos">${c.name}</a></li>`).join('');
+
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>${v('page-title')||'Homy – Perfumes & Cuidado Personal'}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rose:    ${rose};
+      --rose-dk: ${roseDk};
+      --nude:    #D4B8A8;
+      --cream:   ${cream};
+      --cream2:  ${cream2};
+      --white:   #FFFFFF;
+      --black:   ${black};
+      --charcoal:${charcoal};
+      --muted:   #8A7570;
+      --red:     ${red};
+      --green:   #25D366;
+      --radius:  16px;
+      --shadow:  0 4px 28px rgba(28,18,16,.10);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black);font-size:16px;line-height:1.6}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    .display{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.05;letter-spacing:-.3px}
+    .topbar{background:var(--rose);color:var(--white);text-align:center;padding:10px 20px;font-size:14px;font-weight:500;letter-spacing:.4px;cursor:pointer}
+    .topbar strong{font-weight:700}
+    header{background:var(--white);border-bottom:1px solid var(--cream2);position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(232,165,176,.12)}
+    .header-inner{max-width:1200px;margin:auto;display:flex;align-items:center;gap:16px;padding:14px 24px}
+    .logo{display:flex;flex-direction:column;align-items:center;flex-shrink:0;cursor:pointer}
+    .logo-mark{width:42px;height:42px;background:var(--rose);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .logo-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--black);letter-spacing:2px;line-height:1;margin-top:2px}
+    .logo-sub{font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+    .search-wrap{flex:1;max-width:500px;position:relative}
+    .search-wrap input{width:100%;border:1.5px solid var(--cream2);border-radius:40px;padding:11px 44px 11px 20px;font-size:15px;outline:none;background:var(--cream);color:var(--black);font-family:'DM Sans',sans-serif;transition:border-color .2s}
+    .search-wrap input:focus{border-color:var(--rose)}
+    .search-wrap .search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:18px;pointer-events:none}
+    .search-results-dropdown{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--white);border:1.5px solid var(--cream2);border-radius:14px;box-shadow:var(--shadow);z-index:300;max-height:320px;overflow-y:auto;display:none}
+    .search-results-dropdown.show{display:block}
+    .search-result-item{display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--cream2);transition:background .15s}
+    .search-result-item:last-child{border-bottom:none}
+    .search-result-item:hover{background:var(--cream)}
+    .search-result-item .sri-img{width:40px;height:40px;border-radius:8px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden}
+    .search-result-item .sri-img img{width:100%;height:100%;object-fit:cover}
+    .search-result-item .sri-info strong{display:block;font-size:14px;font-weight:600}
+    .search-result-item .sri-info span{font-size:13px;color:var(--muted)}
+    .search-no-results{padding:16px;text-align:center;color:var(--muted);font-size:14px}
+    .header-icons{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .header-icons a{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--charcoal);transition:background .2s;text-decoration:none;cursor:pointer}
+    .header-icons a:hover{background:var(--cream)}
+    .cart-btn{position:relative}
+    .cart-count{position:absolute;top:-2px;right:-2px;background:var(--rose);color:var(--white);width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:700;display:none;align-items:center;justify-content:center}
+    .cart-count.show{display:flex}
+    nav{background:var(--white);border-bottom:1px solid var(--cream2)}
+    .nav-inner{max-width:1200px;margin:auto;display:flex;overflow-x:auto;scrollbar-width:none}
+    .nav-inner::-webkit-scrollbar{display:none}
+    nav a{color:var(--charcoal);font-size:14px;font-weight:500;padding:12px 20px;white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+    nav a:hover,nav a.active{color:var(--rose-dk);border-color:var(--rose)}
+    .hero{background:linear-gradient(135deg,${darken(black,-5)} 0%,${darken(black,+8)} 50%,${darken(black,-5)} 100%);padding:80px 24px;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 40%,rgba(232,165,176,.18) 0%,transparent 60%);pointer-events:none}
+    .hero-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(232,165,176,.15);border:1px solid rgba(232,165,176,.3);color:var(--rose);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:40px;margin-bottom:24px}
+    .hero-title{font-size:clamp(48px,5.5vw,80px);color:#fff;margin-bottom:8px;font-family:'Cormorant Garamond',serif;font-weight:600}
+    .hero-title em{color:var(--rose);font-style:normal}
+    .hero-sub{font-size:17px;color:rgba(255,255,255,.7);margin-bottom:32px;max-width:400px;line-height:1.7}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:40px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:transform .15s,box-shadow .15s;font-family:'DM Sans',sans-serif}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
+    .btn-primary{background:var(--rose);color:#fff}
+    .btn-primary:hover{background:var(--rose-dk)}
+    .btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
+    .btn-outline:hover{border-color:var(--rose);color:var(--rose)}
+    .hero-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:36px;backdrop-filter:blur(12px)}
+    .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px}
+    .stat-item{text-align:center}
+    .stat-num{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:600;color:var(--rose);line-height:1}
+    .stat-label{font-size:12px;color:rgba(255,255,255,.6);letter-spacing:1px;margin-top:4px}
+    .hero-promise{display:flex;flex-direction:column;gap:10px}
+    .promise-item{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.8);font-size:14px}
+    .promise-dot{width:6px;height:6px;background:var(--rose);border-radius:50%;flex-shrink:0}
+    section{padding:72px 24px}
+    .section-inner{max-width:1200px;margin:auto}
+    .section-head{text-align:center;margin-bottom:52px}
+    .section-eyebrow{font-size:11px;font-weight:600;letter-spacing:3px;color:var(--rose-dk);text-transform:uppercase;margin-bottom:10px}
+    .section-title{font-size:clamp(32px,3.5vw,52px);font-family:'Cormorant Garamond',serif;font-weight:600}
+    .section-sub{font-size:16px;color:var(--muted);margin-top:10px;max-width:480px;margin-left:auto;margin-right:auto}
+    .guide-section{background:var(--white)}
+    .guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .guide-step{background:var(--cream);border-radius:var(--radius);padding:28px 22px;text-align:center;transition:transform .2s,box-shadow .2s}
+    .guide-step:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+    .guide-step-num{width:44px;height:44px;background:var(--rose);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin:0 auto 16px}
+    .guide-step-icon{font-size:36px;margin-bottom:12px}
+    .guide-step h3{font-size:17px;font-weight:600;margin-bottom:6px}
+    .guide-step p{font-size:14px;color:var(--muted);line-height:1.6}
+    .cats-section{background:var(--cream2)}
+    .cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
+    .cat-card{background:var(--white);border-radius:var(--radius);padding:28px 16px;text-align:center;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;border:1.5px solid transparent}
+    .cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--rose)}
+    .cat-icon{font-size:36px;margin-bottom:12px}
+    .cat-name{font-size:15px;font-weight:600;color:var(--charcoal)}
+    .products-section{background:var(--cream)}
+    .prod-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px}
+    .filter-btn{padding:9px 20px;border-radius:40px;border:1.5px solid var(--cream2);background:var(--white);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;color:var(--charcoal)}
+    .filter-btn:hover,.filter-btn.active{background:var(--rose);color:#fff;border-color:var(--rose)}
+    .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+    .prod-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;cursor:pointer}
+    .prod-card:hover{transform:translateY(-5px);box-shadow:0 14px 40px rgba(28,18,16,.13)}
+    .prod-img{height:200px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;overflow:hidden}
+    .prod-img img{width:100%;height:100%;object-fit:cover}
+    .prod-badge{position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:40px}
+    .prod-badge.nuevo{background:var(--rose);color:#fff}
+    .prod-badge.popular{background:var(--nude);color:var(--charcoal)}
+    .prod-badge.oferta{background:var(--red);color:#fff}
+    .prod-body{padding:18px}
+    .prod-cat{font-size:11px;font-weight:600;letter-spacing:2px;color:var(--rose-dk);margin-bottom:6px;text-transform:uppercase}
+    .prod-name{font-size:18px;font-weight:600;margin-bottom:6px;font-family:'Cormorant Garamond',serif}
+    .prod-desc{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+    .prod-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .prod-price{font-size:20px;font-weight:700}
+    .prod-price-old{font-size:13px;color:var(--muted);text-decoration:line-through;margin-left:6px}
+    .prod-add-btn{background:var(--rose);color:#fff;border:none;border-radius:40px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+    .prod-add-btn:hover{background:var(--rose-dk)}
+    .modal-overlay{position:fixed;inset:0;background:rgba(28,18,16,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+    .modal-overlay.show{display:flex}
+    .modal-box{background:var(--white);border-radius:24px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+    .modal-img{height:260px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:72px;border-radius:24px 24px 0 0;overflow:hidden}
+    .modal-img img{width:100%;height:100%;object-fit:cover}
+    .modal-body{padding:28px}
+    .modal-cat{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--rose-dk);margin-bottom:6px;text-transform:uppercase}
+    .modal-name{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;margin-bottom:8px}
+    .modal-desc{font-size:15px;color:var(--muted);margin-bottom:20px;line-height:1.7}
+    .modal-price-row{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+    .modal-price{font-size:28px;font-weight:700}
+    .modal-price-old{font-size:16px;color:var(--muted);text-decoration:line-through}
+    .modal-qty{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .qty-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--cream2);background:var(--white);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--charcoal)}
+    .qty-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose)}
+    .qty-num{font-size:18px;font-weight:700;min-width:28px;text-align:center}
+    .modal-add-btn{width:100%;background:var(--rose);color:#fff;border:none;border-radius:40px;padding:16px;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif}
+    .modal-add-btn:hover{background:var(--rose-dk)}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;background:rgba(255,255,255,.9);border:none;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
+    .cart-panel{position:fixed;top:0;right:-420px;width:100%;max-width:420px;height:100%;background:var(--white);z-index:600;box-shadow:-8px 0 40px rgba(28,18,16,.15);transition:right .3s ease;display:flex;flex-direction:column}
+    .cart-panel.open{right:0}
+    .cart-header{padding:20px 24px;border-bottom:1px solid var(--cream2);display:flex;align-items:center;justify-content:space-between}
+    .cart-header h3{font-size:20px;font-weight:700}
+    .cart-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)}
+    .cart-items{flex:1;overflow-y:auto;padding:16px 24px}
+    .cart-empty{text-align:center;padding:60px 20px;color:var(--muted)}
+    .cart-empty-icon{font-size:48px;margin-bottom:12px}
+    .cart-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--cream2)}
+    .cart-item-img{width:60px;height:60px;border-radius:10px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;overflow:hidden}
+    .cart-item-img img{width:100%;height:100%;object-fit:cover}
+    .cart-item-info{flex:1}
+    .cart-item-info strong{display:block;font-size:15px;font-weight:600;margin-bottom:2px}
+    .cart-item-info span{font-size:13px;color:var(--muted)}
+    .cart-item-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+    .cart-item-price{font-size:16px;font-weight:700;color:var(--rose-dk)}
+    .cart-item-qty{display:flex;align-items:center;gap:8px}
+    .cart-item-qty button{width:26px;height:26px;border-radius:50%;border:1px solid var(--cream2);background:var(--white);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .cart-item-qty span{font-size:14px;font-weight:600;min-width:20px;text-align:center}
+    .cart-item-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:4px}
+    .cart-footer{padding:20px 24px;border-top:1px solid var(--cream2)}
+    .cart-min-warn{font-size:12px;color:var(--muted);margin-bottom:8px;text-align:center}
+    .cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .cart-total-row span{font-size:16px;color:var(--muted)}
+    .cart-total-row strong{font-size:22px;font-weight:700}
+    .cart-checkout-btn{width:100%;background:var(--rose);color:#fff;border:none;border-radius:40px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif}
+    .cart-checkout-btn:hover{background:var(--rose-dk)}
+    .checkout-overlay{position:fixed;inset:0;background:rgba(28,18,16,.5);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+    .checkout-overlay.show{display:flex}
+    .checkout-box{background:var(--white);border-radius:24px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;padding:32px}
+    .checkout-box h2{font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:6px}
+    .checkout-box .sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+    .checkout-section{margin-bottom:20px}
+    .checkout-section label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+    .checkout-section input,.checkout-section textarea,.checkout-section select{width:100%;border:1.5px solid var(--cream2);border-radius:10px;padding:12px 14px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--black);background:var(--cream);outline:none;transition:border-color .2s}
+    .checkout-section input:focus,.checkout-section textarea:focus{border-color:var(--rose)}
+    .checkout-section textarea{resize:vertical;min-height:70px}
+    .checkout-items-summary{background:var(--cream);border-radius:12px;padding:16px;margin-bottom:20px}
+    .checkout-items-summary .ci-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+    .checkout-items-summary .ci-row:last-child{font-weight:700;font-size:16px;border-top:1px solid var(--cream2);margin-top:8px;padding-top:8px}
+    .delivery-opts{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+    .delivery-opt{border:1.5px solid var(--cream2);border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .2s}
+    .delivery-opt:hover,.delivery-opt.selected{border-color:var(--rose);background:rgba(232,165,176,.06)}
+    .delivery-opt-name{font-size:15px;font-weight:600;margin-bottom:2px}
+    .delivery-opt-desc{font-size:12px;color:var(--muted)}
+    .delivery-opt-price{font-size:14px;font-weight:700;color:var(--rose-dk);margin-top:4px}
+    .checkout-submit{width:100%;background:#25D366;color:#fff;border:none;border-radius:40px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+    .checkout-submit:hover{background:#1da851}
+    .checkout-close{display:block;text-align:center;margin-top:12px;color:var(--muted);font-size:14px;cursor:pointer}
+    .why-section{background:var(--charcoal)}
+    .why-section .section-title,.why-section .section-eyebrow{color:var(--rose)}
+    .why-section .section-sub{color:rgba(255,255,255,.6)}
+    .why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:28px}
+    .why-card{border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:32px 24px;transition:border-color .2s,background .2s}
+    .why-card:hover{border-color:var(--rose);background:rgba(232,165,176,.06)}
+    .why-icon{font-size:36px;margin-bottom:16px}
+    .why-title{font-size:19px;font-weight:600;color:#fff;margin-bottom:8px;font-family:'Cormorant Garamond',serif}
+    .why-text{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7}
+    .social-section{background:var(--cream2);padding:72px 24px}
+    .social-inner{max-width:1200px;margin:auto}
+    .social-links-row{display:flex;gap:14px;justify-content:center;margin-bottom:48px;flex-wrap:wrap}
+    .social-link{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--cream2);border-radius:40px;padding:12px 24px;font-size:15px;font-weight:600;color:var(--charcoal);transition:all .2s}
+    .social-link:hover{border-color:var(--rose);color:var(--rose);box-shadow:var(--shadow)}
+    .social-link .sli{font-size:20px}
+    .ig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .ig-item{border-radius:var(--radius);overflow:hidden;aspect-ratio:1;background:var(--cream);cursor:pointer;transition:transform .2s}
+    .ig-item:hover{transform:scale(1.03)}
+    .ig-item img{width:100%;height:100%;object-fit:cover}
+    .ig-item-emoji{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px}
+    .cta-section{background:var(--rose);padding:72px 24px}
+    .cta-inner{max-width:800px;margin:auto;text-align:center}
+    .cta-inner .display{font-size:clamp(36px,4.5vw,62px);color:#fff;margin-bottom:16px}
+    .cta-inner p{font-size:18px;color:rgba(255,255,255,.85);margin-bottom:36px}
+    .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .btn-white{background:#fff;color:var(--rose-dk)}
+    .btn-white:hover{background:var(--cream)}
+    .btn-wpp{background:#25D366;color:#fff}
+    .btn-wpp:hover{background:#1da851}
+    footer{background:var(--black);color:rgba(255,255,255,.6);padding:60px 24px 28px}
+    .footer-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:28px;color:#fff;font-weight:600;letter-spacing:2px;margin-bottom:12px}
+    .footer-brand p{font-size:14px;line-height:1.7}
+    .footer-col h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:16px;letter-spacing:1px;text-transform:uppercase}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .footer-col ul a{font-size:14px;transition:color .2s}
+    .footer-col ul a:hover{color:var(--rose)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;text-align:center;font-size:13px;max-width:1200px;margin:auto}
+    .wpp-float{position:fixed;bottom:24px;right:24px;z-index:300;width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 6px 24px rgba(37,211,102,.4);transition:transform .2s}
+    .wpp-float:hover{transform:scale(1.1)}
+    .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--charcoal);color:#fff;padding:12px 22px;border-radius:40px;font-size:14px;font-weight:600;opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @media(max-width:900px){.hero-inner{grid-template-columns:1fr}.hero-card{display:none}.footer-inner{grid-template-columns:1fr 1fr}.ig-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.footer-inner{grid-template-columns:1fr}section{padding:52px 18px}.hero{padding:52px 18px}.search-wrap{max-width:100%;order:3;width:100%}.header-inner{flex-wrap:wrap}.cart-panel{max-width:100%}}
+  </style>
+</head>
+<body>
+<div class="topbar" onclick="document.getElementById('guide').scrollIntoView({behavior:'smooth'})">${v('topbar-text')}</div>
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="scrollTo(0,0)">
+      <div class="logo-mark">${v('biz-emoji')||'🌸'}</div>
+      <div class="logo-name">${v('biz-name')||'HOMY'}</div>
+      <div class="logo-sub">${v('biz-sub')||'Perfumes & Cuidado'}</div>
+    </div>
+    <div class="search-wrap">
+      <input type="search" id="search-input" placeholder="Buscar perfumes, cremas, kits..." autocomplete="off"/>
+      <span class="search-icon">🔍</span>
+      <div class="search-results-dropdown" id="search-dropdown"></div>
+    </div>
+    <div class="header-icons">
+      <a href="${igUrl}" target="_blank" title="Instagram">📷</a>
+      <a href="${ttUrl}" target="_blank" title="TikTok">🎵</a>
+      <a class="cart-btn" onclick="openCart()" title="Carrito">🛒<span class="cart-count" id="cart-count">0</span></a>
+    </div>
+  </div>
+</header>
+<nav>
+  <div class="nav-inner">
+    <a href="#inicio" class="active">🏠 Inicio</a>
+    <a href="#guide">📖 Cómo usar</a>
+    <a href="#categorias">🏷️ Categorías</a>
+    <a href="#productos">🛍️ Productos</a>
+    <a href="#nosotros">✨ Por qué Homy</a>
+    <a href="#instagram">📷 Instagram</a>
+    <a href="#contacto">📞 Contacto</a>
+  </div>
+</nav>
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">${v('hero-eyebrow')}</div>
+      <h1 class="hero-title">${v('hero-t1')}<br/><em>${v('hero-t2')}</em></h1>
+      <p class="hero-sub">${v('hero-sub')}</p>
+      <div class="hero-actions">
+        <a href="#productos" class="btn btn-primary">${v('hero-btn1')}</a>
+        <a href="#guide" class="btn btn-outline">${v('hero-btn2')}</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-stats">${statsHTML}</div>
+      <div class="hero-promise">${promisesHTML}</div>
+    </div>
+  </div>
+</section>
+<section class="guide-section" id="guide">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">Guía de uso</div>
+      <h2 class="section-title">${v('guide-title')}</h2>
+      <p class="section-sub">${v('guide-sub')}</p>
+    </div>
+    <div class="guide-grid">${guideHTML}</div>
+  </div>
+</section>
+<section class="cats-section" id="categorias">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">Lo que ofrecemos</div>
+      <h2 class="section-title">Nuestras Categorías</h2>
+    </div>
+    <div class="cats-grid">${catsGridHTML}</div>
+  </div>
+</section>
+<section class="products-section" id="productos">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">Catálogo</div>
+      <h2 class="section-title">Todos los Productos</h2>
+      <p class="section-sub">Calidad premium con envíos a todo Paraguay</p>
+    </div>
+    <div class="prod-filter" id="prod-filter">${filterBtnsHTML}</div>
+    <div class="prod-grid" id="prod-grid"></div>
+  </div>
+</section>
+<section class="why-section" id="nosotros">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">¿Por qué Homy?</div>
+      <h2 class="section-title">${v('why-title')}</h2>
+    </div>
+    <div class="why-grid">${whyHTML}</div>
+  </div>
+</section>
+<section class="social-section" id="instagram">
+  <div class="social-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">Seguinos</div>
+      <h2 class="section-title">Homy en las redes</h2>
+    </div>
+    <div class="social-links-row">
+      <a class="social-link" href="${igUrl}" target="_blank"><span class="sli">📷</span>@${igUser} en Instagram</a>
+      <a class="social-link" href="${ttUrl}" target="_blank"><span class="sli">🎵</span>@${ttUser} en TikTok</a>
+    </div>
+    <div class="ig-grid">${igPhotosHTML}</div>
+  </div>
+</section>
+<section class="cta-section" id="contacto">
+  <div class="cta-inner">
+    <h2 class="display">${v('cta-title')}</h2>
+    <p>${v('cta-text')}</p>
+    <div class="cta-actions">
+      <a href="tel:${phone}" class="btn btn-white">${v('cta-btn1')}</a>
+      <a href="https://wa.me/${wpp}?text=${wppMsg}" class="btn btn-wpp" target="_blank">${v('cta-btn2')}</a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">${v('biz-name')||'HOMY'}</div>
+      <p>${v('footer-text')}</p>
+    </div>
+    <div class="footer-col"><h4>Productos</h4><ul>${footerCats}</ul></div>
+    <div class="footer-col"><h4>Información</h4><ul>${footerInfo}<li><a href="#guide">Cómo usar</a></li><li><a href="#nosotros">Sobre Homy</a></li></ul></div>
+    <div class="footer-col"><h4>Contacto</h4><ul>
+      <li><a href="tel:${phone}">📞 ${phone}</a></li>
+      <li><a href="https://wa.me/${wpp}" target="_blank">💬 WhatsApp</a></li>
+      <li><a href="mailto:${v('contact-email')}">✉️ ${v('contact-email')}</a></li>
+      <li><a href="#">📍 ${v('contact-address')}</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">${v('copyright-text')}</div>
+</footer>
+<a class="wpp-float" href="https://wa.me/${wpp}?text=${wppMsg}" target="_blank">💬</a>
+<div class="modal-overlay" id="prod-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-img" id="modal-img"></div>
+    <div class="modal-body">
+      <div class="modal-cat" id="modal-cat"></div>
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <div class="modal-price-row"><div class="modal-price" id="modal-price"></div><div class="modal-price-old" id="modal-price-old"></div></div>
+      <div class="modal-qty">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <div class="qty-num" id="modal-qty">1</div>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+        <span style="font-size:13px;color:var(--muted)">unidades</span>
+      </div>
+      <button class="modal-add-btn" onclick="addToCartFromModal()">🛒 Agregar al carrito</button>
+    </div>
+  </div>
+</div>
+<div id="cart-panel" class="cart-panel">
+  <div class="cart-header"><h3>🛒 Tu carrito</h3><button class="cart-close" onclick="closeCart()">✕</button></div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-min-warn" id="cart-min-warn"></div>
+    <div class="cart-total-row"><span>Total</span><strong id="cart-total">₲ 0</strong></div>
+    <button class="cart-checkout-btn" onclick="openCheckout()">✅ Confirmar pedido</button>
+  </div>
+</div>
+<div class="checkout-overlay" id="checkout-overlay" onclick="if(event.target===this)closeCheckout()">
+  <div class="checkout-box">
+    <h2>Confirmar pedido</h2>
+    <p class="sub">Completá tus datos y te contactamos por WhatsApp</p>
+    <div class="checkout-items-summary" id="checkout-summary"></div>
+    <div class="checkout-section"><label>Nombre completo *</label><input type="text" id="co-name" placeholder="Tu nombre"/></div>
+    <div class="checkout-section"><label>Número de WhatsApp *</label><input type="tel" id="co-wpp" placeholder="+595 9XX XXX XXX"/></div>
+    <div class="checkout-section"><label>Correo electrónico (opcional)</label><input type="email" id="co-email" placeholder="tu@email.com"/></div>
+    <div class="checkout-section">
+      <label>Tipo de entrega *</label>
+      <div class="delivery-opts">${deliveryOptsHTML}</div>
+    </div>
+    <div class="checkout-section" id="delivery-address-wrap" style="display:none"><label>Dirección *</label><input type="text" id="co-address" placeholder="Calle, número, referencias..."/></div>
+    <div class="checkout-section"><label>Nota adicional</label><textarea id="co-note" placeholder="Referencias, número de edificio..."></textarea></div>
+    <div class="checkout-section"><label>Código de promoción</label><input type="text" id="co-promo" placeholder="Si tenés un código"/></div>
+    <button class="checkout-submit" onclick="sendOrder()">💬 Realizar pedido por WhatsApp</button>
+    <span class="checkout-close" onclick="closeCheckout()">Volver al carrito</span>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const PRODUCTS = ${productsJS};
+const WPP_NUM = '${wpp}';
+const MIN_ORDER = ${minOrder};
+let cart=[],currentProduct=null,currentQty=1,selectedDelivery='${deliveryOpts[0]?.name||'Encomienda'}';
+function formatPrice(n){return '₲ '+n.toLocaleString('es-PY');}
+function renderProducts(list){
+  const grid=document.getElementById('prod-grid');
+  if(!list||list.length===0){grid.innerHTML='<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:40px">No se encontraron productos</p>';return;}
+  grid.innerHTML=list.map(p=>\`<div class="prod-card" data-cat="\${p.catKey}" onclick="openModal(\${p.id})">
+    <div class="prod-img">\${p.imgUrl?\`<img src="\${p.imgUrl}" alt="\${p.name}" loading="lazy"/>\`:\`<span>\${p.emoji}</span>\`}\${p.badge?\`<div class="prod-badge \${p.badge}">\${p.badge.toUpperCase()}</div>\`:''}
+    </div>
+    <div class="prod-body">
+      <div class="prod-cat">\${p.cat}</div>
+      <div class="prod-name">\${p.name}</div>
+      <div class="prod-desc">\${p.desc}</div>
+      <div class="prod-foot">
+        <div><span class="prod-price">\${formatPrice(p.price)}</span>\${p.priceOld?\`<span class="prod-price-old">\${formatPrice(p.priceOld)}</span>\`:''}</div>
+        <button class="prod-add-btn" onclick="event.stopPropagation();quickAdd(\${p.id})">+ Agregar</button>
+      </div>
+    </div></div>\`).join('');
+}
+renderProducts(PRODUCTS);
+function filterProds(btn,cat){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  renderProducts(cat==='todos'?PRODUCTS:PRODUCTS.filter(p=>p.catKey===cat));
+}
+function filterAndScroll(cat){
+  document.querySelectorAll('.filter-btn').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+cat+"'"))b.click();});
+  document.getElementById('productos').scrollIntoView({behavior:'smooth'});
+}
+const searchInput=document.getElementById('search-input');
+const searchDropdown=document.getElementById('search-dropdown');
+searchInput.addEventListener('input',function(){
+  const q=this.value.toLowerCase().trim();
+  if(!q){searchDropdown.classList.remove('show');return;}
+  const results=PRODUCTS.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q));
+  searchDropdown.innerHTML=results.length===0
+    ?'<div class="search-no-results">No encontramos "'+this.value+'"</div>'
+    :results.map(p=>\`<div class="search-result-item" onclick="openModal(\${p.id});searchDropdown.classList.remove('show');searchInput.value=''">
+      <div class="sri-img">\${p.imgUrl?\`<img src="\${p.imgUrl}" alt="\${p.name}"/>\`:\`\${p.emoji}\`}</div>
+      <div class="sri-info"><strong>\${p.name}</strong><span>\${formatPrice(p.price)}</span></div></div>\`).join('');
+  searchDropdown.classList.add('show');
+});
+document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))searchDropdown.classList.remove('show');});
+function openModal(id){
+  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
+  currentProduct=p;currentQty=1;document.getElementById('modal-qty').textContent=1;
+  const imgEl=document.getElementById('modal-img');
+  imgEl.innerHTML=p.imgUrl?\`<img src="\${p.imgUrl}" alt="\${p.name}"/>\`:\`<span style="font-size:72px">\${p.emoji}</span>\`;
+  document.getElementById('modal-cat').textContent=p.cat;
+  document.getElementById('modal-name').textContent=p.name;
+  document.getElementById('modal-desc').textContent=p.desc;
+  document.getElementById('modal-price').textContent=formatPrice(p.price);
+  document.getElementById('modal-price-old').textContent=p.priceOld?formatPrice(p.priceOld):'';
+  document.getElementById('prod-modal').classList.add('show');document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('prod-modal').classList.remove('show');document.body.style.overflow='';}
+function changeQty(d){currentQty=Math.max(1,currentQty+d);document.getElementById('modal-qty').textContent=currentQty;}
+function addToCartFromModal(){if(!currentProduct)return;addToCart(currentProduct,currentQty);closeModal();}
+function quickAdd(id){const p=PRODUCTS.find(x=>x.id===id);if(p)addToCart(p,1);}
+function addToCart(prod,qty){
+  const ex=cart.find(i=>i.id===prod.id);if(ex)ex.qty+=qty;else cart.push({...prod,qty});
+  updateCartUI();showToast('🛒 '+prod.name+' agregado!');openCart();
+}
+function removeFromCart(id){cart=cart.filter(i=>i.id!==id);updateCartUI();}
+function changeCartQty(id,d){const item=cart.find(i=>i.id===id);if(!item)return;item.qty=Math.max(1,item.qty+d);updateCartUI();}
+function updateCartUI(){
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  const cc=document.getElementById('cart-count');cc.textContent=count;count>0?cc.classList.add('show'):cc.classList.remove('show');
+  document.getElementById('cart-total').textContent=formatPrice(total);
+  const warn=document.getElementById('cart-min-warn');
+  warn.textContent=total<MIN_ORDER?'Pedido mínimo: '+formatPrice(MIN_ORDER):'';
+  const itemsEl=document.getElementById('cart-items');
+  if(cart.length===0){itemsEl.innerHTML='<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Tu carrito está vacío</p></div>';return;}
+  itemsEl.innerHTML=cart.map(i=>\`<div class="cart-item">
+    <div class="cart-item-img">\${i.imgUrl?\`<img src="\${i.imgUrl}" alt="\${i.name}"/>\`:\`\${i.emoji}\`}</div>
+    <div class="cart-item-info"><strong>\${i.name}</strong><span>\${i.cat}</span>
+      <div class="cart-item-foot">
+        <div class="cart-item-price">\${formatPrice(i.price)}</div>
+        <div class="cart-item-qty"><button onclick="changeCartQty(\${i.id},-1)">−</button><span>\${i.qty}</span><button onclick="changeCartQty(\${i.id},1)">+</button></div>
+        <button class="cart-item-del" onclick="removeFromCart(\${i.id})">✕</button>
+      </div></div></div>\`).join('');
+}
+function openCart(){document.getElementById('cart-panel').classList.add('open');document.body.style.overflow='hidden';}
+function closeCart(){document.getElementById('cart-panel').classList.remove('open');document.body.style.overflow='';}
+function openCheckout(){
+  if(cart.length===0){showToast('⚠️ Tu carrito está vacío');return;}
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  if(total<MIN_ORDER){showToast('⚠️ Pedido mínimo: '+formatPrice(MIN_ORDER));return;}
+  closeCart();
+  const el=document.getElementById('checkout-summary');
+  el.innerHTML=cart.map(i=>\`<div class="ci-row"><span>\${i.name} x\${i.qty}</span><span>\${formatPrice(i.price*i.qty)}</span></div>\`).join('')
+    +\`<div class="ci-row"><span>Total</span><span>\${formatPrice(total)}</span></div>\`;
+  document.getElementById('checkout-overlay').classList.add('show');document.body.style.overflow='hidden';
+}
+function closeCheckout(){document.getElementById('checkout-overlay').classList.remove('show');document.body.style.overflow='';}
+function selectDelivery(el,val){
+  document.querySelectorAll('.delivery-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');selectedDelivery=val;
+  document.getElementById('delivery-address-wrap').style.display=val.toLowerCase().includes('delivery')?'block':'none';
+}
+function sendOrder(){
+  const name=document.getElementById('co-name').value.trim();
+  const wpp=document.getElementById('co-wpp').value.trim();
+  if(!name||!wpp){showToast('⚠️ Completá nombre y WhatsApp');return;}
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const address=document.getElementById('co-address').value.trim();
+  const note=document.getElementById('co-note').value.trim();
+  const promo=document.getElementById('co-promo').value.trim();
+  let msg=\`*Nuevo pedido – Homy*\\n\\n👤 *Cliente:* \${name}\\n📱 *WhatsApp:* \${wpp}\\n\\n📦 *Productos:*\\n\`;
+  cart.forEach(i=>{msg+=\`• \${i.name} x\${i.qty} – \${formatPrice(i.price*i.qty)}\\n\`;});
+  msg+=\`\\n💰 *Total: \${formatPrice(total)}*\\n🚚 *Entrega:* \${selectedDelivery}\\n\`;
+  if(address)msg+=\`📍 *Dirección:* \${address}\\n\`;
+  if(note)msg+=\`📝 *Nota:* \${note}\\n\`;
+  if(promo)msg+=\`🎟️ *Código:* \${promo}\\n\`;
+  window.open(\`https://wa.me/\${WPP_NUM}?text=\${encodeURIComponent(msg)}\`,'_blank');
+  closeCheckout();cart=[];updateCartUI();showToast('✅ Pedido enviado por WhatsApp!');
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+const navLinks=document.querySelectorAll('nav a');
+const sectionEls=document.querySelectorAll('section[id]');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const m=document.querySelector(\`nav a[href="#\${e.target.id}"]\`);if(m)m.classList.add('active');}});},{threshold:.35});
+sectionEls.forEach(s=>obs.observe(s));
+<\/script>
+</body>
+</html>`;
+}
+
+function lighten(hex,pct){return shadeColor(hex,pct);}
+function darken(hex,pct){return shadeColor(hex,-pct);}
+function shadeColor(color,percent){
+  let R=parseInt(color.substring(1,3),16),G=parseInt(color.substring(3,5),16),B=parseInt(color.substring(5,7),16);
+  R=Math.max(0,Math.min(255,R+percent));G=Math.max(0,Math.min(255,G+percent));B=Math.max(0,Math.min(255,B+percent));
+  return '#'+[R,G,B].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+async function publishAll(){
+  const btn=document.getElementById('main-save-btn');btn.disabled=true;
+  showToast('loading','⏳ Publicando...');
+  try{
+    const html=generateHTML();
+    const encoded=btoa(unescape(encodeURIComponent(html)));
+    const res=await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/index.html`,{
+      method:'PUT',
+      headers:{'Authorization':'Bearer '+GH_TOKEN,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+      body:JSON.stringify({message:'✏️ Actualización desde panel Homy',content:encoded,sha:SHA})
+    });
+    if(!res.ok){const e=await res.json();throw new Error(e.message);}
+    const data=await res.json();SHA=data.content.sha;
+    showToast('success','✅ ¡Publicado! Vercel actualiza en ~1 minuto');
+  }catch(e){showToast('error','❌ '+e.message);}
+  finally{btn.disabled=false;}
+}
+
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  window.scrollTo(0,0);
+}
+function syncColor(colorId,textId){document.getElementById(textId).value=document.getElementById(colorId).value;}
+function syncColorTxt(textId,colorId){const v=document.getElementById(textId).value;if(/^#[0-9a-fA-F]{6}$/.test(v))document.getElementById(colorId).value=v;}
+function showToast(type,msg){
+  const el=document.getElementById('toast');el.className='toast '+type;el.textContent=msg;el.classList.add('show');
+  if(type!=='loading')setTimeout(()=>el.classList.remove('show'),3500);
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const user=localStorage.getItem('homy_gh_user');
+  const token=localStorage.getItem('homy_gh_token');
+  const repo=localStorage.getItem('homy_gh_repo');
+  if(user&&token&&repo){
+    document.getElementById('gh-user').value=user;
+    document.getElementById('gh-token').value=token;
+    document.getElementById('gh-repo').value=repo;
+    GH_USER=user;GH_TOKEN=token;GH_REPO=repo;
+    loadSite();
+  }
+  stats=[{num:'500+',label:'Clientes felices'},{num:'15',label:'Días duración'},{num:'100%',label:'Amigable piel'},{num:'48h',label:'Envío express'}];
+  renderStats();
+  promises=['Productos de calidad premium','Entrega a domicilio en todo el país','Atención personalizada por WhatsApp'];
+  renderPromises();
+  guideSteps=[{icon:'🚿',title:'Limpiá tu piel',text:'Aplicá sobre piel limpia y seca.'},{icon:'✋',title:'Puntos de calor',text:'Muñecas, cuello, detrás de las orejas.'},{icon:'💧',title:'Cantidad justa',text:'2 a 3 pulverizaciones.'},{icon:'⏰',title:'Larga duración',text:'8 a 15 horas.'}];
+  renderGuideSteps();
+  igPhotos=[{url:'',emoji:'🌸'},{url:'',emoji:'💐'},{url:'',emoji:'✨'},{url:'',emoji:'🧴'}];
+  renderIgPhotos();
+  deliveryOpts=[{name:'📦 Encomienda',desc:'Envío a todo Paraguay · Desde ₲ 30.000',price:'Gratis desde ₲ 130.000'},{name:'🏍️ Delivery – Asunción/Central',desc:'Entrega a domicilio · 24–48 hs',price:'Gratis desde ₲ 125.000'}];
+  renderDelivery();
+});
+</script>
+</body>
+</html>
