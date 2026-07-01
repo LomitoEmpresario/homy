@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Homy – Perfumes & Cuidado Personal</title>
+  <title>Homy â Perfumes & Cuidado Personal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --rose:    #E8A5B0;
-      --rose-dk: #C9808E;
+      --rose:    #e8a5b0;
+      --rose-dk: #c9808e;
       --nude:    #D4B8A8;
-      --cream:   #FAF6F2;
-      --cream2:  #F2EBE4;
+      --cream:   #faf6f2;
+      --cream2:  #f5f1ed;
       --white:   #FFFFFF;
-      --black:   #1C1210;
-      --charcoal:#3D2B26;
+      --black:   #1c1210;
+      --charcoal:#080000;
       --muted:   #8A7570;
-      --red:     #C0392B;
+      --red:     #c0392b;
       --green:   #25D366;
       --radius:  16px;
       --shadow:  0 4px 28px rgba(28,18,16,.10);
@@ -29,20 +29,14 @@
     img{display:block;max-width:100%}
     a{color:inherit;text-decoration:none}
     .display{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.05;letter-spacing:-.3px}
-
-    /* ── TOPBAR ── */
     .topbar{background:var(--rose);color:var(--white);text-align:center;padding:10px 20px;font-size:14px;font-weight:500;letter-spacing:.4px;cursor:pointer}
     .topbar strong{font-weight:700}
-
-    /* ── HEADER ── */
     header{background:var(--white);border-bottom:1px solid var(--cream2);position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(232,165,176,.12)}
     .header-inner{max-width:1200px;margin:auto;display:flex;align-items:center;gap:16px;padding:14px 24px}
     .logo{display:flex;flex-direction:column;align-items:center;flex-shrink:0;cursor:pointer}
     .logo-mark{width:42px;height:42px;background:var(--rose);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
     .logo-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--black);letter-spacing:2px;line-height:1;margin-top:2px}
     .logo-sub{font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
-
-    /* search */
     .search-wrap{flex:1;max-width:500px;position:relative}
     .search-wrap input{width:100%;border:1.5px solid var(--cream2);border-radius:40px;padding:11px 44px 11px 20px;font-size:15px;outline:none;background:var(--cream);color:var(--black);font-family:'DM Sans',sans-serif;transition:border-color .2s}
     .search-wrap input:focus{border-color:var(--rose)}
@@ -52,43 +46,36 @@
     .search-result-item{display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--cream2);transition:background .15s}
     .search-result-item:last-child{border-bottom:none}
     .search-result-item:hover{background:var(--cream)}
-    .search-result-item img,.search-result-item .sri-emoji{width:40px;height:40px;object-fit:cover;border-radius:8px;flex-shrink:0;font-size:24px;display:flex;align-items:center;justify-content:center;background:var(--cream2)}
+    .search-result-item .sri-img{width:40px;height:40px;border-radius:8px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden}
+    .search-result-item .sri-img img{width:100%;height:100%;object-fit:cover}
     .search-result-item .sri-info strong{display:block;font-size:14px;font-weight:600}
     .search-result-item .sri-info span{font-size:13px;color:var(--muted)}
     .search-no-results{padding:16px;text-align:center;color:var(--muted);font-size:14px}
-
-    /* header icons */
     .header-icons{display:flex;align-items:center;gap:8px;flex-shrink:0}
-    .header-icons a{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--charcoal);transition:background .2s;text-decoration:none}
+    .header-icons a{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--charcoal);transition:background .2s;text-decoration:none;cursor:pointer}
     .header-icons a:hover{background:var(--cream)}
     .cart-btn{position:relative}
     .cart-count{position:absolute;top:-2px;right:-2px;background:var(--rose);color:var(--white);width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:700;display:none;align-items:center;justify-content:center}
     .cart-count.show{display:flex}
-
-    /* ── NAV ── */
     nav{background:var(--white);border-bottom:1px solid var(--cream2)}
-    .nav-inner{max-width:1200px;margin:auto;display:flex;overflow-x:auto;scrollbar-width:none;gap:0}
+    .nav-inner{max-width:1200px;margin:auto;display:flex;overflow-x:auto;scrollbar-width:none}
     .nav-inner::-webkit-scrollbar{display:none}
     nav a{color:var(--charcoal);font-size:14px;font-weight:500;padding:12px 20px;white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
     nav a:hover,nav a.active{color:var(--rose-dk);border-color:var(--rose)}
-
-    /* ── HERO ── */
-    .hero{background:linear-gradient(135deg,#2A1518 0%,#3D1F24 50%,#2A1518 100%);padding:80px 24px;position:relative;overflow:hidden}
+    .hero{background:linear-gradient(135deg,#211715 0%,#140a08 50%,#211715 100%);padding:80px 24px;position:relative;overflow:hidden}
     .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 40%,rgba(232,165,176,.18) 0%,transparent 60%);pointer-events:none}
     .hero-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
     .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(232,165,176,.15);border:1px solid rgba(232,165,176,.3);color:var(--rose);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:40px;margin-bottom:24px}
-    .hero-title{font-size:clamp(48px,5.5vw,80px);color:var(--white);margin-bottom:8px}
+    .hero-title{font-size:clamp(48px,5.5vw,80px);color:#fff;margin-bottom:8px;font-family:'Cormorant Garamond',serif;font-weight:600}
     .hero-title em{color:var(--rose);font-style:normal}
     .hero-sub{font-size:17px;color:rgba(255,255,255,.7);margin-bottom:32px;max-width:400px;line-height:1.7}
     .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
     .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:40px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:transform .15s,box-shadow .15s;font-family:'DM Sans',sans-serif}
     .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
-    .btn-primary{background:var(--rose);color:var(--white)}
+    .btn-primary{background:var(--rose);color:#fff}
     .btn-primary:hover{background:var(--rose-dk)}
-    .btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.3)}
+    .btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
     .btn-outline:hover{border-color:var(--rose);color:var(--rose)}
-
-    /* hero right – stats card */
     .hero-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:36px;backdrop-filter:blur(12px)}
     .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px}
     .stat-item{text-align:center}
@@ -97,58 +84,48 @@
     .hero-promise{display:flex;flex-direction:column;gap:10px}
     .promise-item{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.8);font-size:14px}
     .promise-dot{width:6px;height:6px;background:var(--rose);border-radius:50%;flex-shrink:0}
-
-    /* ── SECTIONS generic ── */
     section{padding:72px 24px}
     .section-inner{max-width:1200px;margin:auto}
     .section-head{text-align:center;margin-bottom:52px}
     .section-eyebrow{font-size:11px;font-weight:600;letter-spacing:3px;color:var(--rose-dk);text-transform:uppercase;margin-bottom:10px}
-    .section-title{font-size:clamp(32px,3.5vw,52px)}
+    .section-title{font-size:clamp(32px,3.5vw,52px);font-family:'Cormorant Garamond',serif;font-weight:600}
     .section-sub{font-size:16px;color:var(--muted);margin-top:10px;max-width:480px;margin-left:auto;margin-right:auto}
-
-    /* ── GUIDE ── */
     .guide-section{background:var(--white)}
     .guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
     .guide-step{background:var(--cream);border-radius:var(--radius);padding:28px 22px;text-align:center;transition:transform .2s,box-shadow .2s}
     .guide-step:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-    .guide-step-num{width:44px;height:44px;background:var(--rose);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin:0 auto 16px}
+    .guide-step-num{width:44px;height:44px;background:var(--rose);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin:0 auto 16px}
     .guide-step-icon{font-size:36px;margin-bottom:12px}
     .guide-step h3{font-size:17px;font-weight:600;margin-bottom:6px}
     .guide-step p{font-size:14px;color:var(--muted);line-height:1.6}
-
-    /* ── CATS ── */
     .cats-section{background:var(--cream2)}
     .cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
     .cat-card{background:var(--white);border-radius:var(--radius);padding:28px 16px;text-align:center;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;border:1.5px solid transparent}
     .cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--rose)}
     .cat-icon{font-size:36px;margin-bottom:12px}
     .cat-name{font-size:15px;font-weight:600;color:var(--charcoal)}
-
-    /* ── PRODUCTS ── */
     .products-section{background:var(--cream)}
     .prod-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px}
     .filter-btn{padding:9px 20px;border-radius:40px;border:1.5px solid var(--cream2);background:var(--white);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;color:var(--charcoal)}
-    .filter-btn:hover,.filter-btn.active{background:var(--rose);color:var(--white);border-color:var(--rose)}
+    .filter-btn:hover,.filter-btn.active{background:var(--rose);color:#fff;border-color:var(--rose)}
     .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
     .prod-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;cursor:pointer}
     .prod-card:hover{transform:translateY(-5px);box-shadow:0 14px 40px rgba(28,18,16,.13)}
     .prod-img{height:200px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;overflow:hidden}
     .prod-img img{width:100%;height:100%;object-fit:cover}
     .prod-badge{position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:40px}
-    .prod-badge.nuevo{background:var(--rose);color:var(--white)}
+    .prod-badge.nuevo{background:var(--rose);color:#fff}
     .prod-badge.popular{background:var(--nude);color:var(--charcoal)}
-    .prod-badge.oferta{background:var(--red);color:var(--white)}
+    .prod-badge.oferta{background:var(--red);color:#fff}
     .prod-body{padding:18px}
     .prod-cat{font-size:11px;font-weight:600;letter-spacing:2px;color:var(--rose-dk);margin-bottom:6px;text-transform:uppercase}
     .prod-name{font-size:18px;font-weight:600;margin-bottom:6px;font-family:'Cormorant Garamond',serif}
     .prod-desc{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5}
     .prod-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
-    .prod-price{font-size:20px;font-weight:700;color:var(--black)}
+    .prod-price{font-size:20px;font-weight:700}
     .prod-price-old{font-size:13px;color:var(--muted);text-decoration:line-through;margin-left:6px}
-    .prod-add-btn{background:var(--rose);color:var(--white);border:none;border-radius:40px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+    .prod-add-btn{background:var(--rose);color:#fff;border:none;border-radius:40px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
     .prod-add-btn:hover{background:var(--rose-dk)}
-
-    /* ── PRODUCT MODAL ── */
     .modal-overlay{position:fixed;inset:0;background:rgba(28,18,16,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
     .modal-overlay.show{display:flex}
     .modal-box{background:var(--white);border-radius:24px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
@@ -163,13 +140,11 @@
     .modal-price-old{font-size:16px;color:var(--muted);text-decoration:line-through}
     .modal-qty{display:flex;align-items:center;gap:16px;margin-bottom:20px}
     .qty-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--cream2);background:var(--white);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--charcoal)}
-    .qty-btn:hover{background:var(--rose);color:var(--white);border-color:var(--rose)}
+    .qty-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose)}
     .qty-num{font-size:18px;font-weight:700;min-width:28px;text-align:center}
-    .modal-add-btn{width:100%;background:var(--rose);color:var(--white);border:none;border-radius:40px;padding:16px;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif}
+    .modal-add-btn{width:100%;background:var(--rose);color:#fff;border:none;border-radius:40px;padding:16px;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif}
     .modal-add-btn:hover{background:var(--rose-dk)}
     .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;background:rgba(255,255,255,.9);border:none;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
-
-    /* ── CART PANEL ── */
     .cart-panel{position:fixed;top:0;right:-420px;width:100%;max-width:420px;height:100%;background:var(--white);z-index:600;box-shadow:-8px 0 40px rgba(28,18,16,.15);transition:right .3s ease;display:flex;flex-direction:column}
     .cart-panel.open{right:0}
     .cart-header{padding:20px 24px;border-bottom:1px solid var(--cream2);display:flex;align-items:center;justify-content:space-between}
@@ -195,10 +170,8 @@
     .cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
     .cart-total-row span{font-size:16px;color:var(--muted)}
     .cart-total-row strong{font-size:22px;font-weight:700}
-    .cart-checkout-btn{width:100%;background:var(--rose);color:var(--white);border:none;border-radius:40px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif}
+    .cart-checkout-btn{width:100%;background:var(--rose);color:#fff;border:none;border-radius:40px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif}
     .cart-checkout-btn:hover{background:var(--rose-dk)}
-
-    /* ── CHECKOUT MODAL ── */
     .checkout-overlay{position:fixed;inset:0;background:rgba(28,18,16,.5);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
     .checkout-overlay.show{display:flex}
     .checkout-box{background:var(--white);border-radius:24px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;padding:32px}
@@ -207,7 +180,7 @@
     .checkout-section{margin-bottom:20px}
     .checkout-section label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
     .checkout-section input,.checkout-section textarea,.checkout-section select{width:100%;border:1.5px solid var(--cream2);border-radius:10px;padding:12px 14px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--black);background:var(--cream);outline:none;transition:border-color .2s}
-    .checkout-section input:focus,.checkout-section textarea:focus,.checkout-section select:focus{border-color:var(--rose)}
+    .checkout-section input:focus,.checkout-section textarea:focus{border-color:var(--rose)}
     .checkout-section textarea{resize:vertical;min-height:70px}
     .checkout-items-summary{background:var(--cream);border-radius:12px;padding:16px;margin-bottom:20px}
     .checkout-items-summary .ci-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
@@ -215,15 +188,12 @@
     .delivery-opts{display:flex;flex-direction:column;gap:10px;margin-top:8px}
     .delivery-opt{border:1.5px solid var(--cream2);border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .2s}
     .delivery-opt:hover,.delivery-opt.selected{border-color:var(--rose);background:rgba(232,165,176,.06)}
-    .delivery-opt input{display:none}
     .delivery-opt-name{font-size:15px;font-weight:600;margin-bottom:2px}
     .delivery-opt-desc{font-size:12px;color:var(--muted)}
     .delivery-opt-price{font-size:14px;font-weight:700;color:var(--rose-dk);margin-top:4px}
-    .checkout-submit{width:100%;background:var(--green);color:var(--white);border:none;border-radius:40px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+    .checkout-submit{width:100%;background:#25D366;color:#fff;border:none;border-radius:40px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
     .checkout-submit:hover{background:#1da851}
     .checkout-close{display:block;text-align:center;margin-top:12px;color:var(--muted);font-size:14px;cursor:pointer}
-
-    /* ── WHY ── */
     .why-section{background:var(--charcoal)}
     .why-section .section-title,.why-section .section-eyebrow{color:var(--rose)}
     .why-section .section-sub{color:rgba(255,255,255,.6)}
@@ -231,67 +201,51 @@
     .why-card{border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:32px 24px;transition:border-color .2s,background .2s}
     .why-card:hover{border-color:var(--rose);background:rgba(232,165,176,.06)}
     .why-icon{font-size:36px;margin-bottom:16px}
-    .why-title{font-size:19px;font-weight:600;color:var(--white);margin-bottom:8px;font-family:'Cormorant Garamond',serif}
+    .why-title{font-size:19px;font-weight:600;color:#fff;margin-bottom:8px;font-family:'Cormorant Garamond',serif}
     .why-text{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7}
-
-    /* ── SOCIAL / INSTAGRAM ── */
     .social-section{background:var(--cream2);padding:72px 24px}
     .social-inner{max-width:1200px;margin:auto}
     .social-links-row{display:flex;gap:14px;justify-content:center;margin-bottom:48px;flex-wrap:wrap}
-    .social-link{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--cream2);border-radius:40px;padding:12px 24px;font-size:15px;font-weight:600;color:var(--charcoal);transition:all .2s;text-decoration:none}
+    .social-link{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--cream2);border-radius:40px;padding:12px 24px;font-size:15px;font-weight:600;color:var(--charcoal);transition:all .2s}
     .social-link:hover{border-color:var(--rose);color:var(--rose);box-shadow:var(--shadow)}
     .social-link .sli{font-size:20px}
     .ig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-    .ig-item{border-radius:var(--radius);overflow:hidden;aspect-ratio:1;background:var(--cream);cursor:pointer;position:relative;transition:transform .2s}
+    .ig-item{border-radius:var(--radius);overflow:hidden;aspect-ratio:1;background:var(--cream);cursor:pointer;transition:transform .2s}
     .ig-item:hover{transform:scale(1.03)}
     .ig-item img{width:100%;height:100%;object-fit:cover}
     .ig-item-emoji{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px}
-
-    /* ── CTA ── */
     .cta-section{background:var(--rose);padding:72px 24px}
     .cta-inner{max-width:800px;margin:auto;text-align:center}
-    .cta-inner .display{font-size:clamp(36px,4.5vw,62px);color:var(--white);margin-bottom:16px}
+    .cta-inner .display{font-size:clamp(36px,4.5vw,62px);color:#fff;margin-bottom:16px}
     .cta-inner p{font-size:18px;color:rgba(255,255,255,.85);margin-bottom:36px}
     .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-    .btn-white{background:var(--white);color:var(--rose-dk)}
+    .btn-white{background:#fff;color:var(--rose-dk)}
     .btn-white:hover{background:var(--cream)}
-    .btn-wpp{background:#25D366;color:var(--white)}
+    .btn-wpp{background:#25D366;color:#fff}
     .btn-wpp:hover{background:#1da851}
-
-    /* ── FOOTER ── */
     footer{background:var(--black);color:rgba(255,255,255,.6);padding:60px 24px 28px}
     .footer-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
-    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--white);font-weight:600;letter-spacing:2px;margin-bottom:12px}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:28px;color:#fff;font-weight:600;letter-spacing:2px;margin-bottom:12px}
     .footer-brand p{font-size:14px;line-height:1.7}
-    .footer-col h4{font-size:14px;font-weight:700;color:var(--white);margin-bottom:16px;letter-spacing:1px;text-transform:uppercase}
+    .footer-col h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:16px;letter-spacing:1px;text-transform:uppercase}
     .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
     .footer-col ul a{font-size:14px;transition:color .2s}
     .footer-col ul a:hover{color:var(--rose)}
     .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;text-align:center;font-size:13px;max-width:1200px;margin:auto}
-
-    /* ── WPP FLOAT ── */
-    .wpp-float{position:fixed;bottom:24px;right:24px;z-index:300;width:58px;height:58px;border-radius:50%;background:#25D366;color:var(--white);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 6px 24px rgba(37,211,102,.4);transition:transform .2s;text-decoration:none}
+    .wpp-float{position:fixed;bottom:24px;right:24px;z-index:300;width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 6px 24px rgba(37,211,102,.4);transition:transform .2s}
     .wpp-float:hover{transform:scale(1.1)}
-
-    /* ── TOAST ── */
-    .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--charcoal);color:var(--white);padding:12px 22px;border-radius:40px;font-size:14px;font-weight:600;opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
+    .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--charcoal);color:#fff;padding:12px 22px;border-radius:40px;font-size:14px;font-weight:600;opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-    /* ── RESPONSIVE ── */
     @media(max-width:900px){.hero-inner{grid-template-columns:1fr}.hero-card{display:none}.footer-inner{grid-template-columns:1fr 1fr}.ig-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:600px){.footer-inner{grid-template-columns:1fr}section{padding:52px 18px}.hero{padding:52px 18px}.search-wrap{max-width:100%;order:3;width:100%}.header-inner{flex-wrap:wrap}.ig-grid{grid-template-columns:repeat(2,1fr)}.cart-panel{max-width:100%}}
+    @media(max-width:600px){.footer-inner{grid-template-columns:1fr}section{padding:52px 18px}.hero{padding:52px 18px}.search-wrap{max-width:100%;order:3;width:100%}.header-inner{flex-wrap:wrap}.cart-panel{max-width:100%}}
   </style>
 </head>
 <body>
-
-<div class="topbar" onclick="document.getElementById('guide').scrollIntoView({behavior:'smooth'})">
-  ✨ <strong>¿Cómo aplicar tu perfume?</strong> — Mirá nuestra guía completa →
-</div>
-
+<div class="topbar" onclick="document.getElementById('guide').scrollIntoView({behavior:'smooth'})">â¨ Â¿CÃ³mo aplicar tu perfume? â MirÃ¡ nuestra guÃ­a completa â</div>
 <header>
   <div class="header-inner">
     <div class="logo" onclick="scrollTo(0,0)">
-      <div class="logo-mark">🌸</div>
+      <div class="logo-mark">ð¸</div>
       <div class="logo-name">HOMY</div>
       <div class="logo-sub">Perfumes & Cuidado</div>
     </div>
@@ -303,14 +257,11 @@
     <div class="header-icons">
       <a href="https://www.instagram.com/homypy" target="_blank" title="Instagram">📷</a>
       <a href="https://www.tiktok.com/@homypy" target="_blank" title="TikTok">🎵</a>
-      <a class="cart-btn" onclick="openCart()" title="Carrito">
-        🛒<span class="cart-count" id="cart-count">0</span>
-      </a>
+      <a class="cart-btn" onclick="openCart()" title="Carrito">🛒<span class="cart-count" id="cart-count">0</span></a>
     </div>
   </div>
 </header>
-
-<nav aria-label="Categorías">
+<nav>
   <div class="nav-inner">
     <a href="#inicio" class="active">🏠 Inicio</a>
     <a href="#guide">📖 Cómo usar</a>
@@ -321,243 +272,171 @@
     <a href="#contacto">📞 Contacto</a>
   </div>
 </nav>
-
-<!-- HERO -->
 <section class="hero" id="inicio">
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-eyebrow">🌸 Envíos a todo Paraguay</div>
-      <h1 class="hero-title display">
-        Tu esencia,<br/><em>tu identidad</em>
-      </h1>
-      <p class="hero-sub">Perfumes de larga duración y productos de cuidado personal que te hacen sentir especial todos los días.</p>
+      <div class="hero-eyebrow">ð¸ EnvÃ­os a todo Paraguay</div>
+      <h1 class="hero-title">Tu esencia,<br/><em>tu identidad</em></h1>
+      <p class="hero-sub">Perfumes de larga duraciÃ³n y productos de cuidado personal que te hacen sentir especial todos los dÃ­as.</p>
       <div class="hero-actions">
-        <a href="#productos" class="btn btn-primary">🛍️ Ver Catálogo</a>
-        <a href="#guide" class="btn btn-outline">📖 Cómo usar</a>
+        <a href="#productos" class="btn btn-primary">ðï¸ Ver CatÃ¡logo</a>
+        <a href="#guide" class="btn btn-outline">ð CÃ³mo usar</a>
       </div>
     </div>
     <div class="hero-card">
-      <div class="hero-stats">
-        <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Clientes felices</div></div>
-        <div class="stat-item"><div class="stat-num">15</div><div class="stat-label">Días de duración</div></div>
-        <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Amigable con la piel</div></div>
-        <div class="stat-item"><div class="stat-num">48h</div><div class="stat-label">Envío express</div></div>
-      </div>
-      <div class="hero-promise">
-        <div class="promise-item"><span class="promise-dot"></span>Productos de calidad premium</div>
-        <div class="promise-item"><span class="promise-dot"></span>Entrega a domicilio en todo el país</div>
-        <div class="promise-item"><span class="promise-dot"></span>Atención personalizada por WhatsApp</div>
-      </div>
+      <div class="hero-stats"><div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Clientes felices</div></div><div class="stat-item"><div class="stat-num">15</div><div class="stat-label">DÃ­as de duraciÃ³n</div></div><div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Amigable con la piel</div></div><div class="stat-item"><div class="stat-num">48h</div><div class="stat-label">EnvÃ­o express</div></div></div>
+      <div class="hero-promise"><div class="promise-item"><span class="promise-dot"></span>Productos de calidad premium</div><div class="promise-item"><span class="promise-dot"></span>Entrega a domicilio en todo el paÃ­s</div><div class="promise-item"><span class="promise-dot"></span>AtenciÃ³n personalizada por WhatsApp</div></div>
     </div>
   </div>
 </section>
-
-<!-- GUIDE -->
 <section class="guide-section" id="guide">
   <div class="section-inner">
     <div class="section-head">
       <div class="section-eyebrow">Guía de uso</div>
-      <h2 class="section-title display">¿Cómo usar nuestros productos?</h2>
-      <p class="section-sub">Seguí estos simples pasos para aprovechar al máximo cada producto Homy</p>
+      <h2 class="section-title">Â¿CÃ³mo usar nuestros productos?</h2>
+      <p class="section-sub">SeguÃ­ estos simples pasos para aprovechar al mÃ¡ximo cada producto Homy</p>
     </div>
-    <div class="guide-grid" id="guide-steps">
-      <div class="guide-step">
-        <div class="guide-step-num">1</div>
-        <div class="guide-step-icon">🚿</div>
-        <h3>Limpiá tu piel</h3>
-        <p>Aplicá sobre piel limpia y seca para una mayor duración y mejor absorción.</p>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">2</div>
-        <div class="guide-step-icon">✋</div>
-        <h3>Puntos de calor</h3>
-        <p>Aplicá en muñecas, cuello y detrás de las orejas para potenciar la fragancia.</p>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">3</div>
-        <div class="guide-step-icon">💧</div>
-        <h3>Cantidad justa</h3>
-        <p>2 a 3 pulverizaciones son suficientes. Menos es más para una fragancia equilibrada.</p>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">4</div>
-        <div class="guide-step-icon">⏰</div>
-        <h3>Duración garantizada</h3>
-        <p>Nuestros perfumes duran entre 8 y 15 horas según el punto de aplicación.</p>
-      </div>
-    </div>
+    <div class="guide-grid">
+        <div class="guide-step">
+          <div class="guide-step-num">1</div>
+          <div class="guide-step-icon">ð¿</div>
+          <h3>LimpiÃ¡ tu piel</h3>
+          <p>AplicÃ¡ sobre piel limpia y seca para una mayor duraciÃ³n y mejor absorciÃ³n.</p>
+        </div>
+        <div class="guide-step">
+          <div class="guide-step-num">2</div>
+          <div class="guide-step-icon">â</div>
+          <h3>Puntos de calor</h3>
+          <p>AplicÃ¡ en muÃ±ecas, cuello y detrÃ¡s de las orejas para potenciar la fragancia.</p>
+        </div>
+        <div class="guide-step">
+          <div class="guide-step-num">3</div>
+          <div class="guide-step-icon">ð§</div>
+          <h3>Cantidad justa</h3>
+          <p>2 a 3 pulverizaciones son suficientes. Menos es mÃ¡s para una fragancia equilibrada.</p>
+        </div>
+        <div class="guide-step">
+          <div class="guide-step-num">4</div>
+          <div class="guide-step-icon">â°</div>
+          <h3>DuraciÃ³n garantizada</h3>
+          <p>Nuestros perfumes duran entre 8 y 15 horas segÃºn el punto de aplicaciÃ³n.</p>
+        </div></div>
   </div>
 </section>
-
-<!-- CATEGORIAS -->
 <section class="cats-section" id="categorias">
   <div class="section-inner">
     <div class="section-head">
       <div class="section-eyebrow">Lo que ofrecemos</div>
-      <h2 class="section-title display">Nuestras Categorías</h2>
+      <h2 class="section-title">Nuestras Categorías</h2>
     </div>
-    <div class="cats-grid" id="cats-grid">
-      <div class="cat-card" onclick="filterAndScroll('perfume')">
-        <div class="cat-icon">🌸</div>
-        <div class="cat-name">Perfumes</div>
-      </div>
-      <div class="cat-card" onclick="filterAndScroll('crema')">
-        <div class="cat-icon">🧴</div>
-        <div class="cat-name">Cremas</div>
-      </div>
-      <div class="cat-card" onclick="filterAndScroll('kit')">
-        <div class="cat-icon">🎁</div>
-        <div class="cat-name">Kits & Sets</div>
-      </div>
-      <div class="cat-card" onclick="filterAndScroll('cabello')">
-        <div class="cat-icon">💆</div>
-        <div class="cat-name">Cabello</div>
-      </div>
-      <div class="cat-card" onclick="filterAndScroll('corporal')">
-        <div class="cat-icon">🫧</div>
-        <div class="cat-name">Cuidado Corporal</div>
-      </div>
-      <div class="cat-card" onclick="filterAndScroll('mini')">
-        <div class="cat-icon">✨</div>
-        <div class="cat-name">Minis</div>
-      </div>
-    </div>
+    <div class="cats-grid">
+        <div class="cat-card" onclick="filterAndScroll('perfume')">
+          <div class="cat-icon">ð¸</div>
+          <div class="cat-name">Perfumes</div>
+        </div>
+        <div class="cat-card" onclick="filterAndScroll('crema')">
+          <div class="cat-icon">ð§´</div>
+          <div class="cat-name">Cremas</div>
+        </div>
+        <div class="cat-card" onclick="filterAndScroll('kit')">
+          <div class="cat-icon">ð</div>
+          <div class="cat-name">Kits & Sets</div>
+        </div>
+        <div class="cat-card" onclick="filterAndScroll('cabello')">
+          <div class="cat-icon">ð</div>
+          <div class="cat-name">Cabello</div>
+        </div>
+        <div class="cat-card" onclick="filterAndScroll('corporal')">
+          <div class="cat-icon">ð«§</div>
+          <div class="cat-name">Cuidado Corporal</div>
+        </div>
+        <div class="cat-card" onclick="filterAndScroll('mini')">
+          <div class="cat-icon">â¨</div>
+          <div class="cat-name">Minis</div>
+        </div></div>
   </div>
 </section>
-
-<!-- PRODUCTS -->
 <section class="products-section" id="productos">
   <div class="section-inner">
     <div class="section-head">
       <div class="section-eyebrow">Catálogo</div>
-      <h2 class="section-title display">Todos los Productos</h2>
-      <p class="section-sub">Calidad premium al mejor precio, con envíos a todo el país</p>
+      <h2 class="section-title">Todos los Productos</h2>
+      <p class="section-sub">Calidad premium con envíos a todo Paraguay</p>
     </div>
-    <div class="prod-filter" id="prod-filter">
-      <button class="filter-btn active" onclick="filterProds(this,'todos')">Todos</button>
-      <button class="filter-btn" onclick="filterProds(this,'perfume')">Perfumes</button>
-      <button class="filter-btn" onclick="filterProds(this,'crema')">Cremas</button>
-      <button class="filter-btn" onclick="filterProds(this,'kit')">Kits</button>
-      <button class="filter-btn" onclick="filterProds(this,'cabello')">Cabello</button>
-      <button class="filter-btn" onclick="filterProds(this,'corporal')">Corporal</button>
-      <button class="filter-btn" onclick="filterProds(this,'mini')">Minis</button>
-    </div>
-    <div class="prod-grid" id="prod-grid">
-      <!-- products injected by JS -->
-    </div>
+    <div class="prod-filter" id="prod-filter"><button class="filter-btn active" onclick="filterProds(this,'todos')">Todos</button><button class="filter-btn" onclick="filterProds(this,'perfume')">ð¸ Perfumes</button><button class="filter-btn" onclick="filterProds(this,'crema')">ð§´ Cremas</button><button class="filter-btn" onclick="filterProds(this,'kit')">ð Kits & Sets</button><button class="filter-btn" onclick="filterProds(this,'cabello')">ð Cabello</button><button class="filter-btn" onclick="filterProds(this,'corporal')">ð«§ Cuidado Corporal</button><button class="filter-btn" onclick="filterProds(this,'mini')">â¨ Minis</button></div>
+    <div class="prod-grid" id="prod-grid"></div>
   </div>
 </section>
-
-<!-- WHY -->
 <section class="why-section" id="nosotros">
   <div class="section-inner">
     <div class="section-head">
       <div class="section-eyebrow">¿Por qué Homy?</div>
-      <h2 class="section-title display">Calidad que se siente</h2>
-      <p class="section-sub">Elegimos cada producto pensando en vos</p>
+      <h2 class="section-title">Calidad que se siente</h2>
     </div>
-    <div class="why-grid" id="why-grid">
-      <div class="why-card">
-        <div class="why-icon">🌿</div>
-        <div class="why-title">Ingredientes naturales</div>
-        <div class="why-text">Fórmulas con ingredientes seleccionados, amigables con la piel y el medioambiente.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">💜</div>
-        <div class="why-title">Larga duración</div>
-        <div class="why-text">Fragancias que permanecen contigo durante todo el día, de 8 a 15 horas garantizadas.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">🚀</div>
-        <div class="why-title">Envíos rápidos</div>
-        <div class="why-text">Despacho en 24/48 horas. Encomienda o delivery según tu zona de Paraguay.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">💬</div>
-        <div class="why-title">Atención personalizada</div>
-        <div class="why-text">Te acompañamos por WhatsApp antes, durante y después de tu compra.</div>
-      </div>
-    </div>
+    <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">ð¿</div>
+          <div class="why-title">Ingredientes naturales</div>
+          <div class="why-text">FÃ³rmulas con ingredientes seleccionados, amigables con la piel y el medioambiente.</div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">ð</div>
+          <div class="why-title">Larga duraciÃ³n</div>
+          <div class="why-text">Fragancias que permanecen contigo durante todo el dÃ­a, de 8 a 15 horas garantizadas.</div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">ð</div>
+          <div class="why-title">EnvÃ­os rÃ¡pidos</div>
+          <div class="why-text">Despacho en 24/48 horas. Encomienda o delivery segÃºn tu zona de Paraguay.</div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">ð¬</div>
+          <div class="why-title">AtenciÃ³n personalizada</div>
+          <div class="why-text">Te acompaÃ±amos por WhatsApp antes, durante y despuÃ©s de tu compra.</div>
+        </div></div>
   </div>
 </section>
-
-<!-- SOCIAL / INSTAGRAM -->
 <section class="social-section" id="instagram">
   <div class="social-inner">
     <div class="section-head">
       <div class="section-eyebrow">Seguinos</div>
-      <h2 class="section-title display">Homy en las redes</h2>
-      <p class="section-sub">Encontranos en Instagram y TikTok para ver novedades, tips y looks del día</p>
+      <h2 class="section-title">Homy en las redes</h2>
     </div>
     <div class="social-links-row">
-      <a class="social-link" href="https://www.instagram.com/homypy" target="_blank">
-        <span class="sli">📷</span> @homypy en Instagram
-      </a>
-      <a class="social-link" href="https://www.tiktok.com/@homypy" target="_blank">
-        <span class="sli">🎵</span> @homypy en TikTok
-      </a>
+      <a class="social-link" href="https://www.instagram.com/homypy" target="_blank"><span class="sli">📷</span>@homypy en Instagram</a>
+      <a class="social-link" href="https://www.tiktok.com/@homypy" target="_blank"><span class="sli">🎵</span>@homypy en TikTok</a>
     </div>
-    <div class="ig-grid" id="ig-grid">
-      <div class="ig-item"><div class="ig-item-emoji">🌸</div></div>
-      <div class="ig-item"><div class="ig-item-emoji">💐</div></div>
-      <div class="ig-item"><div class="ig-item-emoji">✨</div></div>
-      <div class="ig-item"><div class="ig-item-emoji">🧴</div></div>
-    </div>
+    <div class="ig-grid"><div class="ig-item"><div class="ig-item-emoji">ð¸</div></div><div class="ig-item"><div class="ig-item-emoji">ð</div></div><div class="ig-item"><div class="ig-item-emoji">â¨</div></div><div class="ig-item"><div class="ig-item-emoji">ð§´</div></div></div>
   </div>
 </section>
-
-<!-- CTA -->
 <section class="cta-section" id="contacto">
   <div class="cta-inner">
-    <h2 class="display">¿Lista para tu rutina ideal?</h2>
-    <p>Contactanos y te ayudamos a elegir los productos perfectos para vos. Envíos a todo Paraguay.</p>
+    <h2 class="display">Â¿Lista para tu rutina ideal?</h2>
+    <p>Contactanos y te ayudamos a elegir los productos perfectos para vos. EnvÃ­os a todo Paraguay.</p>
     <div class="cta-actions">
-      <a href="tel:+595XXXXXXXXX" class="btn btn-white">📞 Llamar</a>
-      <a href="https://wa.me/595XXXXXXXXX?text=Hola!%20Quiero%20consultar%20sobre%20los%20productos%20Homy" class="btn btn-wpp" target="_blank">💬 WhatsApp</a>
+      <a href="tel:ð +595 XXX XXX XXX" class="btn btn-white">ð Llamar</a>
+      <a href="https://wa.me/?text=Hola!%20Quiero%20consultar%20sobre%20los%20productos%20Homy" class="btn btn-wpp" target="_blank">ð¬ WhatsApp</a>
     </div>
   </div>
 </section>
-
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">HOMY</div>
       <p>Perfumes y cuidado personal de calidad premium. Tu esencia, tu identidad.</p>
     </div>
-    <div class="footer-col">
-      <h4>Productos</h4>
-      <ul>
-        <li><a href="#productos">Perfumes</a></li>
-        <li><a href="#productos">Cremas</a></li>
-        <li><a href="#productos">Kits & Sets</a></li>
-        <li><a href="#productos">Cabello</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Información</h4>
-      <ul>
-        <li><a href="#guide">Cómo usar</a></li>
-        <li><a href="#nosotros">Sobre Homy</a></li>
-        <li><a href="#instagram">Instagram</a></li>
-        <li><a href="#instagram">TikTok</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Contacto</h4>
-      <ul>
-        <li><a href="tel:+595XXXXXXXXX">📞 +595 XXX XXX XXX</a></li>
-        <li><a href="https://wa.me/595XXXXXXXXX" target="_blank">💬 WhatsApp</a></li>
-        <li><a href="mailto:homy@gmail.com">✉️ homy@gmail.com</a></li>
-        <li><a href="#">📍 Asunción, Paraguay</a></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h4>Productos</h4><ul><li><a href="#productos">Perfumes</a></li><li><a href="#productos">Cremas</a></li><li><a href="#productos">Kits & Sets</a></li><li><a href="#productos">Cabello</a></li></ul></div>
+    <div class="footer-col"><h4>Información</h4><ul><li><a href="#productos">Cuidado Corporal</a></li><li><a href="#productos">Minis</a></li><li><a href="#guide">Cómo usar</a></li><li><a href="#nosotros">Sobre Homy</a></li></ul></div>
+    <div class="footer-col"><h4>Contacto</h4><ul>
+      <li><a href="tel:ð +595 XXX XXX XXX">📞 ð +595 XXX XXX XXX</a></li>
+      <li><a href="https://wa.me/" target="_blank">💬 WhatsApp</a></li>
+      <li><a href="mailto:homy@gmail.com">✉️ homy@gmail.com</a></li>
+      <li><a href="#">📍 ð AsunciÃ³n, Paraguay</a></li>
+    </ul></div>
   </div>
-  <div class="footer-bottom">© 2025 Homy – Todos los derechos reservados</div>
+  <div class="footer-bottom">Â© 2025 Homy â Todos los derechos reservados</div>
 </footer>
-
-<a class="wpp-float" href="https://wa.me/595XXXXXXXXX?text=Hola!%20Quiero%20consultar%20sobre%20los%20productos%20Homy" target="_blank">💬</a>
-
-<!-- PRODUCT MODAL -->
+<a class="wpp-float" href="https://wa.me/?text=Hola!%20Quiero%20consultar%20sobre%20los%20productos%20Homy" target="_blank">💬</a>
 <div class="modal-overlay" id="prod-modal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -566,10 +445,7 @@
       <div class="modal-cat" id="modal-cat"></div>
       <div class="modal-name" id="modal-name"></div>
       <div class="modal-desc" id="modal-desc"></div>
-      <div class="modal-price-row">
-        <div class="modal-price" id="modal-price"></div>
-        <div class="modal-price-old" id="modal-price-old"></div>
-      </div>
+      <div class="modal-price-row"><div class="modal-price" id="modal-price"></div><div class="modal-price-old" id="modal-price-old"></div></div>
       <div class="modal-qty">
         <button class="qty-btn" onclick="changeQty(-1)">−</button>
         <div class="qty-num" id="modal-qty">1</div>
@@ -580,314 +456,194 @@
     </div>
   </div>
 </div>
-
-<!-- CART PANEL -->
 <div id="cart-panel" class="cart-panel">
-  <div class="cart-header">
-    <h3>🛒 Tu carrito</h3>
-    <button class="cart-close" onclick="closeCart()">✕</button>
-  </div>
+  <div class="cart-header"><h3>🛒 Tu carrito</h3><button class="cart-close" onclick="closeCart()">✕</button></div>
   <div class="cart-items" id="cart-items"></div>
   <div class="cart-footer">
     <div class="cart-min-warn" id="cart-min-warn"></div>
-    <div class="cart-total-row">
-      <span>Total</span>
-      <strong id="cart-total">₲ 0</strong>
-    </div>
+    <div class="cart-total-row"><span>Total</span><strong id="cart-total">₲ 0</strong></div>
     <button class="cart-checkout-btn" onclick="openCheckout()">✅ Confirmar pedido</button>
   </div>
 </div>
-
-<!-- CHECKOUT MODAL -->
 <div class="checkout-overlay" id="checkout-overlay" onclick="if(event.target===this)closeCheckout()">
   <div class="checkout-box">
     <h2>Confirmar pedido</h2>
     <p class="sub">Completá tus datos y te contactamos por WhatsApp</p>
     <div class="checkout-items-summary" id="checkout-summary"></div>
-    <div class="checkout-section">
-      <label>Nombre completo *</label>
-      <input type="text" id="co-name" placeholder="Tu nombre"/>
-    </div>
-    <div class="checkout-section">
-      <label>Número de WhatsApp *</label>
-      <input type="tel" id="co-wpp" placeholder="+595 9XX XXX XXX"/>
-    </div>
-    <div class="checkout-section">
-      <label>Correo electrónico (opcional)</label>
-      <input type="email" id="co-email" placeholder="tu@email.com"/>
-    </div>
+    <div class="checkout-section"><label>Nombre completo *</label><input type="text" id="co-name" placeholder="Tu nombre"/></div>
+    <div class="checkout-section"><label>Número de WhatsApp *</label><input type="tel" id="co-wpp" placeholder="+595 9XX XXX XXX"/></div>
+    <div class="checkout-section"><label>Correo electrónico (opcional)</label><input type="email" id="co-email" placeholder="tu@email.com"/></div>
     <div class="checkout-section">
       <label>Tipo de entrega *</label>
       <div class="delivery-opts">
-        <div class="delivery-opt selected" onclick="selectDelivery(this,'Encomienda')">
-          <div class="delivery-opt-name">📦 Encomienda</div>
-          <div class="delivery-opt-desc">Envío a todo Paraguay · Desde ₲ 30.000</div>
-          <div class="delivery-opt-price">Gratis desde ₲ 130.000 en productos</div>
-        </div>
-        <div class="delivery-opt" onclick="selectDelivery(this,'Delivery – Solo Asunción/Central')">
-          <div class="delivery-opt-name">🏍️ Delivery – Asunción/Central</div>
-          <div class="delivery-opt-desc">Entrega a domicilio · 24–48 hs</div>
-          <div class="delivery-opt-price">Gratis desde ₲ 125.000 en productos</div>
-        </div>
-      </div>
+              <div class="delivery-opt selected" onclick="selectDelivery(this,'Encomienda')">
+                <div class="delivery-opt-name">Encomienda</div>
+                <div class="delivery-opt-desc">EnvÃ­o a todo Paraguay Â· Desde â² 30.000</div>
+                <div class="delivery-opt-price">Gratis desde â² 130.000 en productos</div>
+              </div>
+              <div class="delivery-opt " onclick="selectDelivery(this,'Delivery â AsunciÃ³n/Central')">
+                <div class="delivery-opt-name">Delivery â AsunciÃ³n/Central</div>
+                <div class="delivery-opt-desc">Entrega a domicilio Â· 24â48 hs</div>
+                <div class="delivery-opt-price">Gratis desde â² 125.000 en productos</div>
+              </div></div>
     </div>
-    <div class="checkout-section" id="delivery-address-wrap" style="display:none">
-      <label>Dirección de entrega *</label>
-      <input type="text" id="co-address" placeholder="Calle, número, referencias..."/>
-    </div>
-    <div class="checkout-section">
-      <label>Nota adicional (opcional)</label>
-      <textarea id="co-note" placeholder="Alguna referencia, número de edificio, etc."></textarea>
-    </div>
-    <div class="checkout-section">
-      <label>Código de promoción</label>
-      <input type="text" id="co-promo" placeholder="Si tenés un código ingresalo aquí"/>
-    </div>
+    <div class="checkout-section" id="delivery-address-wrap" style="display:none"><label>Dirección *</label><input type="text" id="co-address" placeholder="Calle, número, referencias..."/></div>
+    <div class="checkout-section"><label>Nota adicional</label><textarea id="co-note" placeholder="Referencias, número de edificio..."></textarea></div>
+    <div class="checkout-section"><label>Código de promoción</label><input type="text" id="co-promo" placeholder="Si tenés un código"/></div>
     <button class="checkout-submit" onclick="sendOrder()">💬 Realizar pedido por WhatsApp</button>
     <span class="checkout-close" onclick="closeCheckout()">Volver al carrito</span>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
-// ══ PRODUCTS DATA ══
 const PRODUCTS = [
-  {id:1,name:'Rosa Noir',cat:'PERFUMES',catKey:'perfume',emoji:'🌹',imgUrl:'',desc:'Fragancia floral con notas de rosa, jazmín y sándalo. Larga duración garantizada.',price:120000,priceOld:150000,badge:'popular'},
-  {id:2,name:'Velvet Musk',cat:'PERFUMES',catKey:'perfume',emoji:'✨',imgUrl:'',desc:'Seductora mezcla de almizcle, vainilla y ámbar. Perfecta para la noche.',price:140000,priceOld:0,badge:'nuevo'},
-  {id:3,name:'Crema Hidratante Rose',cat:'CREMAS',catKey:'crema',emoji:'🧴',imgUrl:'',desc:'Crema facial con extracto de rosa y ácido hialurónico. Hidratación profunda 24 hs.',price:65000,priceOld:80000,badge:'oferta'},
-  {id:4,name:'Kit Romántico',cat:'KITS & SETS',catKey:'kit',emoji:'🎁',imgUrl:'',desc:'Set de perfume 50ml + crema hidratante + sérum. El regalo perfecto.',price:180000,priceOld:220000,badge:'popular'},
-  {id:5,name:'Aceite Capilar Shine',cat:'CABELLO',catKey:'cabello',emoji:'💆',imgUrl:'',desc:'Aceite nutritivo para cabello con keratina y argan. Brillo y suavidad instantáneos.',price:55000,priceOld:0,badge:''},
-  {id:6,name:'Scrub Corporal Coco',cat:'CUIDADO CORPORAL',catKey:'corporal',emoji:'🫧',imgUrl:'',desc:'Exfoliante corporal de coco y sal marina. Piel suave y radiante desde la primera vez.',price:48000,priceOld:60000,badge:'oferta'},
-  {id:7,name:'Mini Floral',cat:'MINIS',catKey:'mini',emoji:'🌸',imgUrl:'',desc:'Perfume en tamaño mini 10ml. Ideal para llevar en la cartera. ¡No lo vas a soltar!',price:22000,priceOld:30000,badge:'nuevo'},
-  {id:8,name:'Aqua Fresca',cat:'PERFUMES',catKey:'perfume',emoji:'💧',imgUrl:'',desc:'Fragancia fresca y liviana con notas de agua marina y cítricos. Perfecta para el día.',price:110000,priceOld:0,badge:''},
+  {
+    "id": 1,
+    "name": "Rosa Noir",
+    "cat": "PERFUMES",
+    "catKey": "perfume",
+    "emoji": "🌹",
+    "imgUrl": "https://i.ytimg.com/vi/5sGeDv_BRes/maxresdefault.jpg",
+    "desc": "Fragancia floral con notas de rosa y sándalo.",
+    "price": 120000,
+    "priceOld": 150000,
+    "badge": "popular"
+  },
+  {
+    "id": 2,
+    "name": "Velvet Musk",
+    "cat": "PERFUMES",
+    "catKey": "perfume",
+    "emoji": "✨",
+    "imgUrl": "",
+    "desc": "Mezcla de almizcle y vainilla.",
+    "price": 140000,
+    "priceOld": 0,
+    "badge": "nuevo"
+  }
 ];
-
-// ══ CART ══
-let cart = [];
-let currentProduct = null;
-let currentQty = 1;
-let selectedDelivery = 'Encomienda';
-const WPP_NUM = '595XXXXXXXXX';
+const WPP_NUM = '';
 const MIN_ORDER = 10000;
-
-function formatPrice(n){ return '₲ ' + n.toLocaleString('es-PY'); }
-
-// ── RENDER PRODUCTS ──
+let cart=[],currentProduct=null,currentQty=1,selectedDelivery='Encomienda';
+function formatPrice(n){return '₲ '+n.toLocaleString('es-PY');}
 function renderProducts(list){
-  const grid = document.getElementById('prod-grid');
-  if(!list || list.length===0){ grid.innerHTML='<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:40px">No se encontraron productos</p>'; return; }
-  grid.innerHTML = list.map(p=>`
-    <div class="prod-card" data-cat="${p.catKey}" onclick="openModal(${p.id})">
-      <div class="prod-img">
-        ${p.imgUrl?`<img src="${p.imgUrl}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji}</span>`}
-        ${p.badge?`<div class="prod-badge ${p.badge}">${p.badge.toUpperCase()}</div>`:''}
+  const grid=document.getElementById('prod-grid');
+  if(!list||list.length===0){grid.innerHTML='<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:40px">No se encontraron productos</p>';return;}
+  grid.innerHTML=list.map(p=>`<div class="prod-card" data-cat="${p.catKey}" onclick="openModal(${p.id})">
+    <div class="prod-img">${p.imgUrl?`<img src="${p.imgUrl}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji}</span>`}${p.badge?`<div class="prod-badge ${p.badge}">${p.badge.toUpperCase()}</div>`:''}
+    </div>
+    <div class="prod-body">
+      <div class="prod-cat">${p.cat}</div>
+      <div class="prod-name">${p.name}</div>
+      <div class="prod-desc">${p.desc}</div>
+      <div class="prod-foot">
+        <div><span class="prod-price">${formatPrice(p.price)}</span>${p.priceOld?`<span class="prod-price-old">${formatPrice(p.priceOld)}</span>`:''}</div>
+        <button class="prod-add-btn" onclick="event.stopPropagation();quickAdd(${p.id})">+ Agregar</button>
       </div>
-      <div class="prod-body">
-        <div class="prod-cat">${p.cat}</div>
-        <div class="prod-name">${p.name}</div>
-        <div class="prod-desc">${p.desc}</div>
-        <div class="prod-foot">
-          <div>
-            <span class="prod-price">${formatPrice(p.price)}</span>
-            ${p.priceOld?`<span class="prod-price-old">${formatPrice(p.priceOld)}</span>`:''}
-          </div>
-          <button class="prod-add-btn" onclick="event.stopPropagation();quickAdd(${p.id})">+ Agregar</button>
-        </div>
-      </div>
-    </div>`).join('');
+    </div></div>`).join('');
 }
 renderProducts(PRODUCTS);
-
-// ── FILTER ──
-function filterProds(btn, cat){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const list = cat==='todos' ? PRODUCTS : PRODUCTS.filter(p=>p.catKey===cat);
-  renderProducts(list);
+function filterProds(btn,cat){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  renderProducts(cat==='todos'?PRODUCTS:PRODUCTS.filter(p=>p.catKey===cat));
 }
 function filterAndScroll(cat){
-  const btns = document.querySelectorAll('.filter-btn');
-  btns.forEach(b=>{ if(b.textContent.toLowerCase().includes(cat.replace('perfume','perfum'))) b.click(); });
+  document.querySelectorAll('.filter-btn').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+cat+"'"))b.click();});
   document.getElementById('productos').scrollIntoView({behavior:'smooth'});
 }
-
-// ── SEARCH ──
-const searchInput = document.getElementById('search-input');
-const searchDropdown = document.getElementById('search-dropdown');
-searchInput.addEventListener('input', function(){
-  const q = this.value.toLowerCase().trim();
-  if(!q){ searchDropdown.classList.remove('show'); return; }
-  const results = PRODUCTS.filter(p=>
-    p.name.toLowerCase().includes(q) ||
-    p.cat.toLowerCase().includes(q) ||
-    p.desc.toLowerCase().includes(q)
-  );
-  if(results.length===0){
-    searchDropdown.innerHTML='<div class="search-no-results">No encontramos productos para "'+this.value+'"</div>';
-  } else {
-    searchDropdown.innerHTML = results.map(p=>`
-      <div class="search-result-item" onclick="openModal(${p.id});searchDropdown.classList.remove('show');searchInput.value=''">
-        <div class="sri-emoji">${p.emoji}</div>
-        <div class="sri-info"><strong>${p.name}</strong><span>${formatPrice(p.price)}</span></div>
-      </div>`).join('');
-  }
+const searchInput=document.getElementById('search-input');
+const searchDropdown=document.getElementById('search-dropdown');
+searchInput.addEventListener('input',function(){
+  const q=this.value.toLowerCase().trim();
+  if(!q){searchDropdown.classList.remove('show');return;}
+  const results=PRODUCTS.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q));
+  searchDropdown.innerHTML=results.length===0
+    ?'<div class="search-no-results">No encontramos "'+this.value+'"</div>'
+    :results.map(p=>`<div class="search-result-item" onclick="openModal(${p.id});searchDropdown.classList.remove('show');searchInput.value=''">
+      <div class="sri-img">${p.imgUrl?`<img src="${p.imgUrl}" alt="${p.name}"/>`:`${p.emoji}`}</div>
+      <div class="sri-info"><strong>${p.name}</strong><span>${formatPrice(p.price)}</span></div></div>`).join('');
   searchDropdown.classList.add('show');
 });
-document.addEventListener('click', e=>{
-  if(!e.target.closest('.search-wrap')) searchDropdown.classList.remove('show');
-});
-
-// ── MODAL ──
+document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))searchDropdown.classList.remove('show');});
 function openModal(id){
-  const p = PRODUCTS.find(x=>x.id===id);
-  if(!p) return;
-  currentProduct = p;
-  currentQty = 1;
-  document.getElementById('modal-qty').textContent = 1;
-  const imgEl = document.getElementById('modal-img');
-  imgEl.innerHTML = p.imgUrl ? `<img src="${p.imgUrl}" alt="${p.name}"/>` : `<span style="font-size:72px">${p.emoji}</span>`;
-  document.getElementById('modal-cat').textContent = p.cat;
-  document.getElementById('modal-name').textContent = p.name;
-  document.getElementById('modal-desc').textContent = p.desc;
-  document.getElementById('modal-price').textContent = formatPrice(p.price);
-  const oldEl = document.getElementById('modal-price-old');
-  oldEl.textContent = p.priceOld ? formatPrice(p.priceOld) : '';
-  document.getElementById('prod-modal').classList.add('show');
-  document.body.style.overflow = 'hidden';
+  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
+  currentProduct=p;currentQty=1;document.getElementById('modal-qty').textContent=1;
+  const imgEl=document.getElementById('modal-img');
+  imgEl.innerHTML=p.imgUrl?`<img src="${p.imgUrl}" alt="${p.name}"/>`:`<span style="font-size:72px">${p.emoji}</span>`;
+  document.getElementById('modal-cat').textContent=p.cat;
+  document.getElementById('modal-name').textContent=p.name;
+  document.getElementById('modal-desc').textContent=p.desc;
+  document.getElementById('modal-price').textContent=formatPrice(p.price);
+  document.getElementById('modal-price-old').textContent=p.priceOld?formatPrice(p.priceOld):'';
+  document.getElementById('prod-modal').classList.add('show');document.body.style.overflow='hidden';
 }
-function closeModal(){ document.getElementById('prod-modal').classList.remove('show'); document.body.style.overflow=''; }
-function changeQty(d){ currentQty=Math.max(1,currentQty+d); document.getElementById('modal-qty').textContent=currentQty; }
-function addToCartFromModal(){
-  if(!currentProduct) return;
-  addToCart(currentProduct, currentQty);
-  closeModal();
+function closeModal(){document.getElementById('prod-modal').classList.remove('show');document.body.style.overflow='';}
+function changeQty(d){currentQty=Math.max(1,currentQty+d);document.getElementById('modal-qty').textContent=currentQty;}
+function addToCartFromModal(){if(!currentProduct)return;addToCart(currentProduct,currentQty);closeModal();}
+function quickAdd(id){const p=PRODUCTS.find(x=>x.id===id);if(p)addToCart(p,1);}
+function addToCart(prod,qty){
+  const ex=cart.find(i=>i.id===prod.id);if(ex)ex.qty+=qty;else cart.push({...prod,qty});
+  updateCartUI();showToast('🛒 '+prod.name+' agregado!');openCart();
 }
-function quickAdd(id){
-  const p = PRODUCTS.find(x=>x.id===id);
-  if(p) addToCart(p,1);
-}
-
-// ── CART LOGIC ──
-function addToCart(prod, qty){
-  const existing = cart.find(i=>i.id===prod.id);
-  if(existing) existing.qty+=qty;
-  else cart.push({...prod, qty});
-  updateCartUI();
-  showToast('🛒 '+prod.name+' agregado!');
-  openCart();
-}
-function removeFromCart(id){ cart=cart.filter(i=>i.id!==id); updateCartUI(); }
-function changeCartQty(id,d){
-  const item=cart.find(i=>i.id===id);
-  if(!item) return;
-  item.qty=Math.max(1,item.qty+d);
-  updateCartUI();
-}
+function removeFromCart(id){cart=cart.filter(i=>i.id!==id);updateCartUI();}
+function changeCartQty(id,d){const item=cart.find(i=>i.id===id);if(!item)return;item.qty=Math.max(1,item.qty+d);updateCartUI();}
 function updateCartUI(){
-  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const count = cart.reduce((s,i)=>s+i.qty,0);
-  const countEl = document.getElementById('cart-count');
-  countEl.textContent=count;
-  count>0?countEl.classList.add('show'):countEl.classList.remove('show');
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  const cc=document.getElementById('cart-count');cc.textContent=count;count>0?cc.classList.add('show'):cc.classList.remove('show');
   document.getElementById('cart-total').textContent=formatPrice(total);
   const warn=document.getElementById('cart-min-warn');
-  warn.textContent = total<MIN_ORDER ? `Pedido mínimo: ${formatPrice(MIN_ORDER)}` : '';
+  warn.textContent=total<MIN_ORDER?'Pedido mínimo: '+formatPrice(MIN_ORDER):'';
   const itemsEl=document.getElementById('cart-items');
-  if(cart.length===0){
-    itemsEl.innerHTML=`<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Tu carrito está vacío</p></div>`;
-    return;
-  }
-  itemsEl.innerHTML=cart.map(i=>`
-    <div class="cart-item">
-      <div class="cart-item-img">${i.imgUrl?`<img src="${i.imgUrl}" alt="${i.name}"/>`:`${i.emoji}`}</div>
-      <div class="cart-item-info">
-        <strong>${i.name}</strong>
-        <span>${i.cat}</span>
-        <div class="cart-item-foot">
-          <div class="cart-item-price">${formatPrice(i.price)}</div>
-          <div class="cart-item-qty">
-            <button onclick="changeCartQty(${i.id},-1)">−</button>
-            <span>${i.qty}</span>
-            <button onclick="changeCartQty(${i.id},1)">+</button>
-          </div>
-          <button class="cart-item-del" onclick="removeFromCart(${i.id})">✕</button>
-        </div>
-      </div>
-    </div>`).join('');
+  if(cart.length===0){itemsEl.innerHTML='<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Tu carrito está vacío</p></div>';return;}
+  itemsEl.innerHTML=cart.map(i=>`<div class="cart-item">
+    <div class="cart-item-img">${i.imgUrl?`<img src="${i.imgUrl}" alt="${i.name}"/>`:`${i.emoji}`}</div>
+    <div class="cart-item-info"><strong>${i.name}</strong><span>${i.cat}</span>
+      <div class="cart-item-foot">
+        <div class="cart-item-price">${formatPrice(i.price)}</div>
+        <div class="cart-item-qty"><button onclick="changeCartQty(${i.id},-1)">−</button><span>${i.qty}</span><button onclick="changeCartQty(${i.id},1)">+</button></div>
+        <button class="cart-item-del" onclick="removeFromCart(${i.id})">✕</button>
+      </div></div></div>`).join('');
 }
-function openCart(){ document.getElementById('cart-panel').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeCart(){ document.getElementById('cart-panel').classList.remove('open'); document.body.style.overflow=''; }
-
-// ── CHECKOUT ──
+function openCart(){document.getElementById('cart-panel').classList.add('open');document.body.style.overflow='hidden';}
+function closeCart(){document.getElementById('cart-panel').classList.remove('open');document.body.style.overflow='';}
 function openCheckout(){
-  if(cart.length===0){ showToast('⚠️ Tu carrito está vacío'); return; }
+  if(cart.length===0){showToast('⚠️ Tu carrito está vacío');return;}
   const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  if(total<MIN_ORDER){ showToast('⚠️ Pedido mínimo: '+formatPrice(MIN_ORDER)); return; }
+  if(total<MIN_ORDER){showToast('⚠️ Pedido mínimo: '+formatPrice(MIN_ORDER));return;}
   closeCart();
-  updateCheckoutSummary();
-  document.getElementById('checkout-overlay').classList.add('show');
-  document.body.style.overflow='hidden';
-}
-function closeCheckout(){ document.getElementById('checkout-overlay').classList.remove('show'); document.body.style.overflow=''; }
-function updateCheckoutSummary(){
-  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const el=document.getElementById('checkout-summary');
   el.innerHTML=cart.map(i=>`<div class="ci-row"><span>${i.name} x${i.qty}</span><span>${formatPrice(i.price*i.qty)}</span></div>`).join('')
     +`<div class="ci-row"><span>Total</span><span>${formatPrice(total)}</span></div>`;
+  document.getElementById('checkout-overlay').classList.add('show');document.body.style.overflow='hidden';
 }
-function selectDelivery(el, val){
-  document.querySelectorAll('.delivery-opt').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedDelivery=val;
-  document.getElementById('delivery-address-wrap').style.display=val.includes('Delivery')?'block':'none';
+function closeCheckout(){document.getElementById('checkout-overlay').classList.remove('show');document.body.style.overflow='';}
+function selectDelivery(el,val){
+  document.querySelectorAll('.delivery-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');selectedDelivery=val;
+  document.getElementById('delivery-address-wrap').style.display=val.toLowerCase().includes('delivery')?'block':'none';
 }
 function sendOrder(){
   const name=document.getElementById('co-name').value.trim();
   const wpp=document.getElementById('co-wpp').value.trim();
-  if(!name||!wpp){ showToast('⚠️ Completá nombre y WhatsApp'); return; }
+  if(!name||!wpp){showToast('⚠️ Completá nombre y WhatsApp');return;}
   const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const address=document.getElementById('co-address').value.trim();
   const note=document.getElementById('co-note').value.trim();
   const promo=document.getElementById('co-promo').value.trim();
-  let msg=`*Nuevo pedido – Homy*\n\n`;
-  msg+=`👤 *Cliente:* ${name}\n`;
-  msg+=`📱 *WhatsApp:* ${wpp}\n`;
-  msg+=`\n📦 *Productos:*\n`;
-  cart.forEach(i=>{ msg+=`• ${i.name} x${i.qty} – ${formatPrice(i.price*i.qty)}\n`; });
-  msg+=`\n💰 *Total: ${formatPrice(total)}*\n`;
-  msg+=`🚚 *Entrega:* ${selectedDelivery}\n`;
-  if(address) msg+=`📍 *Dirección:* ${address}\n`;
-  if(note) msg+=`📝 *Nota:* ${note}\n`;
-  if(promo) msg+=`🎟️ *Código:* ${promo}\n`;
-  window.open(`https://wa.me/${WPP_NUM}?text=${encodeURIComponent(msg)}`, '_blank');
-  closeCheckout();
-  cart=[];
-  updateCartUI();
-  showToast('✅ Pedido enviado por WhatsApp!');
+  let msg=`*Nuevo pedido – Homy*\n\n👤 *Cliente:* ${name}\n📱 *WhatsApp:* ${wpp}\n\n📦 *Productos:*\n`;
+  cart.forEach(i=>{msg+=`• ${i.name} x${i.qty} – ${formatPrice(i.price*i.qty)}\n`;});
+  msg+=`\n💰 *Total: ${formatPrice(total)}*\n🚚 *Entrega:* ${selectedDelivery}\n`;
+  if(address)msg+=`📍 *Dirección:* ${address}\n`;
+  if(note)msg+=`📝 *Nota:* ${note}\n`;
+  if(promo)msg+=`🎟️ *Código:* ${promo}\n`;
+  window.open(`https://wa.me/${WPP_NUM}?text=${encodeURIComponent(msg)}`,'_blank');
+  closeCheckout();cart=[];updateCartUI();showToast('✅ Pedido enviado por WhatsApp!');
 }
-
-// ── TOAST ──
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
-}
-
-// ── NAV HIGHLIGHT ──
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 const navLinks=document.querySelectorAll('nav a');
-const sections=document.querySelectorAll('section[id]');
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      navLinks.forEach(l=>l.classList.remove('active'));
-      const m=document.querySelector(`nav a[href="#${e.target.id}"]`);
-      if(m) m.classList.add('active');
-    }
-  });
-},{threshold:.35});
-sections.forEach(s=>obs.observe(s));
+const sectionEls=document.querySelectorAll('section[id]');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const m=document.querySelector(`nav a[href="#${e.target.id}"]`);if(m)m.classList.add('active');}});},{threshold:.35});
+sectionEls.forEach(s=>obs.observe(s));
 </script>
 </body>
 </html>
