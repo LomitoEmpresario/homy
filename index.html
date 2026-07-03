@@ -282,7 +282,7 @@
 </head>
 <body>
 
-<div class="topbar" onclick="document.getElementById('guide').scrollIntoView({behavior:'smooth'})">
+<div class="topbar" id="topbar-el" onclick="document.getElementById('guide').scrollIntoView({behavior:'smooth'})">
   &#127800; Como aplicar tu perfume? &mdash; Mira nuestra guia completa
 </div>
 
@@ -541,6 +541,7 @@ var SITE = {
   wpp:'595XXXXXXXXX',
   minOrder:10000,
   logoImg:'',
+  logoEmoji:'&#127800;',
   logoName:'Hommy',
   logoSub:'Perfumes & Cuidado',
   topbar:'Como aplicar tu perfume? Mira nuestra guia completa',
@@ -602,6 +603,8 @@ function applyData(){
   // logo
   var liw=document.getElementById('logo-img-wrap');
   if(SITE.logoImg){liw.innerHTML='<img src="'+SITE.logoImg+'" alt="logo"/>';}
+  else if(SITE.logoEmoji){liw.innerHTML=SITE.logoEmoji;}
+  document.getElementById('topbar-el').innerHTML=SITE.topbar;
   document.getElementById('logo-name-el').textContent=SITE.logoName;
   document.getElementById('logo-sub-el').textContent=SITE.logoSub;
   document.getElementById('footer-logo-el').textContent=SITE.logoName;
